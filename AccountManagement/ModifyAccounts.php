@@ -73,7 +73,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                             <?php
                                                 
                                                 $accounts = DBHandler::GetAccounts($_SESSION["Account"]->id);
-                                                    
+                                                if($accounts !== NULL){
                                                     foreach($accounts as $a){
                                                     ?>
                                                         <tr><form action = "../Backend/modify_check.php" method="GET">
@@ -88,7 +88,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                         </form></tr>
                                                     <?php
                                                     }
-                                                    
+                                                }
                                             ?>
                                         </tbody>
                                     </table>

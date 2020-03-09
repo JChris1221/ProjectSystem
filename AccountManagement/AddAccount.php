@@ -81,7 +81,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         </div>
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputUsername">Select Role</label>
-                                            <select class = "form-control form-control-lg" name = "Role">
+                                            <select class = "form-control" name = "Role">
                                                 <?php 
                                                     $roles = DBHandler::GetRoles();
                                                     foreach($roles as $r){

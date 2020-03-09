@@ -69,10 +69,11 @@ if(!isset($_SESSION["Account"])){
                                                 <tbody>
                                                     <?php
                                                         $accounts = DBHandler::GetAccounts($_SESSION["Account"]->id);
-                                                        if(count($accounts) <= 0){
+                                                        if($accounts === NULL){
                                                             echo "<tr><td colspan = '4'>No accounts yet.</td></tr>";
                                                         }
-                                                        else{
+                                                        else
+                                                        {
                                                             foreach ($accounts as $a) {
                                                                 echo "<tr>";
                                                                 ?>
@@ -83,8 +84,6 @@ if(!isset($_SESSION["Account"])){
                                                                 <?php
                                                                 echo "</tr>";
                                                             }
-
-                                                            
                                                         }
 
                                                     ?>

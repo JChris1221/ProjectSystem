@@ -63,7 +63,7 @@ if(isset($_SESSION["Account"])){
                 <footer class="py-4 bg-primary mt-auto">
                     <div class="container-fluid">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; jcsping 2020</div>
+                            <div class="text-muted">Copyright &copy; Some website 2020</div>
                             <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;

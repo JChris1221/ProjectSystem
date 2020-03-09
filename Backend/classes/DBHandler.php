@@ -1,6 +1,7 @@
 <?php
 require_once("Role.php");
 require_once("Account.php");
+require_once("Student.php");
 
 class DBHandler
 {
@@ -179,7 +180,6 @@ class DBHandler
 				array_push($accounts, Account::CreateAccountWithRoleName($id, $firstname, $lastname, $username, $roleId, $roleName));
 			}
 			return $accounts;
-			
 		}
 		else{
 			return NULL;
@@ -325,6 +325,44 @@ class DBHandler
 
 		$rc = $stmt->execute();
 		
+		if ( false===$rc ){
+		  die('execute() failed: ' . htmlspecialchars($stmt->error));
+		}
+
+		if($stmt->affected_rows == 0){
+			$stmt->close();
+			$connection->close();	
+			return false;
+		}
+
+		$stmt->close();
+		$connection->close();	
+
+		return true;
+	}
+
+	public static function AddGroup($title, $panelists, $adviser, $members){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("INSERT INTO groups (Firstname, Lastname, Username, Password, Role_Id) VALUES (?,?,?,?,?)");
+
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$hashPass = md5($password); //Convert password to hash
+
+		$rc = $stmt->bind_param('ssssd', $firstname, $lastname, $username, $hashPass, $roleId);
+
+		if ( false===$rc ) {
+		  die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+		}
+
+		$rc = $stmt->execute();
+
 		if ( false===$rc ){
 		  die('execute() failed: ' . htmlspecialchars($stmt->error));
 		}

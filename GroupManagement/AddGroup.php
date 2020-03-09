@@ -71,13 +71,13 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputFirstName">First Name</label>
-                                                        <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" name = "Firstname" value = ""/>
+                                                        <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" name = "Firstname[]" value = ""/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputLastName">Last Name</label>
-                                                        <input class="form-control py-4" id="inputLastName" name="Lastname" type="text" placeholder="Enter last name" />
+                                                        <input class="form-control py-4" id="inputLastName" name="Lastname[]" type="text" placeholder="Enter last name" />
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
@@ -110,7 +110,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <!--PANELIST-->
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputUsername">Select Adviser</label>
-                                            <select class = "form-control form-control-lg" name = "Role">
+                                            <select class = "form-control" name = "Role">
                                                 <?php 
                                                     $roles = DBHandler::GetRoles();
                                                     foreach($roles as $r){
@@ -122,7 +122,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                             </select>
                                         </div>
                                         <div class="form-group mt-4 mb-0">
-                                            <button class="btn btn-success" type = "submit">Add Account</button>
+                                            <button class="btn btn-success" type = "submit">Add Group</button>
                                             <a class="btn btn-danger" role="button" href="ModifyAccounts.php">Cancel</a>
 
                                         </div>

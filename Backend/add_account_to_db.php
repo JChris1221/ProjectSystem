@@ -15,15 +15,19 @@ if(Empty($firstname)||Empty($lastname)||Empty($username)||Empty($password)||Empt
 	$_SESSION["FormAccount"] = Account::CreateAccountWithInfo(NULL, $firstname, $lastname, $username, $role);
 	header("Location: ../AccountManagement/AddAccount.php");
 }
-if($password !== $cpass){
+else if($password !== $cpass){
 	$_SESSION["AddUserError"] = "Passwords don't match";
 	$_SESSION["FormAccount"] = Account::CreateAccountWithInfo(NULL, $firstname, $lastname, $username, $role);
 	header("Location: ../AccountManagement/AddAccount.php");
 }
-
-if(DBHandler::AddAccount($firstname, $lastname, $username, $password, $role)){
-	header("Location: ../AccountManagement/ModifyAccounts.php");
+else{
+	if(DBHandler::AddAccount($firstname, $lastname, $username, $password, $role)){
+		header("Location: ../AccountManagement/ModifyAccounts.php");
+	}
+	else
+		die("Error Inserting to Database");
 }
-else
-	die("Error Inserting to Database");
+
+
+
 ?>

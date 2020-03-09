@@ -10,7 +10,7 @@ require_once ("CreateRelativeLink.php");
                     ><div class="sb-nav-link-icon"><i class="fas fa-home"></i></i></div>
                     Dashboard</a
                 >
-                <div class="sb-sidenav-menu-heading">Manage</div>
+                <div class="sb-sidenav-menu-heading">View</div>
                 <?php 
                     if($_SESSION['Account']->roleid == 1){
                 ?>

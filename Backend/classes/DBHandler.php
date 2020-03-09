@@ -7,7 +7,7 @@ class DBHandler
 	static private $server = "localhost";
 	static private $s_username = "root";
 	static private $s_pass = "";
-	static private $dbName = "thesis-defense-system-db";
+	static private $dbName = "thesis-grading-system-db";
 
 	public function __construct(){
 	}
@@ -196,7 +196,7 @@ class DBHandler
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$stmt = $connection->prepare("SELECT * FROM roles");
+		$stmt = $connection->prepare("SELECT * FROM roles ORDER BY Name");
 		
 		if ( false===$stmt ) {
 		  die('prepare() failed: ' . htmlspecialchars($connection->error));

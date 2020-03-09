@@ -142,7 +142,7 @@ class DBHandler
 		$connection->close();
 	}
 
-	//Gets all accounts in database except the current account logged in
+	//Gets all accounts in database except the current account with the id in the argument
 	public static function GetAccounts($id)
 	{
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
@@ -189,6 +189,41 @@ class DBHandler
 		$connection->close();	
 	}
 
+	//Gets all accounts with a certain role
+	public static function GetAccountsWithRole($roleId)
+	{
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT * FROM accounts WHERE Role_Id =  ? ORDER BY Lastname");
+		$stmt->bind_param('d', $roleId);
+		$stmt->execute();
+
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$accounts = array();
+			while($row = $res->fetch_assoc()){
+				$id = $row['Id'];
+				$firstname = $row['Firstname'];
+				$username = $row['Username'];
+				$lastname = $row['Lastname'];
+				$roleId = $row['Role_Id'];
+
+
+				array_push($accounts, Account::CreateAccountWithInfo($id, $firstname, $lastname, $username, $roleId));
+			}
+			return $accounts;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();	
+	}
 	//Gets all roles from roles table
 	public static function GetRoles(){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
@@ -341,42 +376,68 @@ class DBHandler
 		return true;
 	}
 
-	public static function AddGroup($title, $panelists, $adviser, $members){
+	public static function AddGroup($title, $panel_ids, $adviser_id, $members){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$stmt = $connection->prepare("INSERT INTO groups (Firstname, Lastname, Username, Password, Role_Id) VALUES (?,?,?,?,?)");
+		$stmt = $connection->prepare("INSERT INTO Groups (Thesis_Title) VALUES (?)");
 
 		if ( false===$stmt ) {
 		  die('prepare() failed: ' . htmlspecialchars($connection->error));
 		}
 
-		$hashPass = md5($password); //Convert password to hash
-
-		$rc = $stmt->bind_param('ssssd', $firstname, $lastname, $username, $hashPass, $roleId);
-
-		if ( false===$rc ) {
-		  die('bind_param() failed: ' . htmlspecialchars($stmt->error));
-		}
-
-		$rc = $stmt->execute();
-
-		if ( false===$rc ){
-		  die('execute() failed: ' . htmlspecialchars($stmt->error));
-		}
+		$stmt->bind_param('s', $title);
+		$stmt->execute();
 
 		if($stmt->affected_rows == 0){
-			$stmt->close();
-			$connection->close();	
-			return false;
+			$success = false;
 		}
+		else{
+			$groupid = $stmt->insert_id; //GET GROUP ID FROM ADDED GROUP
+			$stmt->close();
 
-		$stmt->close();
+			//For panelist and adviser
+			$faculty_stmt = $connection->prepare("INSERT INTO Faculty_Assignment (Group_Id, Account_Id, Faculty_Type_Id) VALUES (?,?,?)");
+
+			// if($faculty_stmt === false)
+			// 	die("Error preparing statement: ".$connection->error);
+
+			foreach($panel_ids as $pid){
+				$p = 3;
+				if($faculty_stmt->bind_param('ddd', $groupid, $pid, $p) === false)
+					die("error binding params in panelist");
+				$faculty_stmt->execute();
+			}
+
+			$a = 1;
+			
+			if($faculty_stmt->bind_param('ddd', $groupid, $adviser_id, $a)===false)
+				die("error binding params in adviser");
+
+			$faculty_stmt->execute();
+			$faculty_stmt->close();
+
+			//For group members
+			$student_stmt = $connection->prepare("INSERT INTO Students (Firstname, Lastname, Group_Id) VALUES (?,?,?)");
+			if($student_stmt === false)
+				die("Error preparing statement: ".$connection->error);
+
+			foreach($members as $student){
+				if($student_stmt->bind_param('ssd', $student->firstname, $student->lastname, $groupid)===false)
+					die("error binding params in students");
+				$student_stmt->execute();
+			}
+			$student_stmt->close();
+
+			$success = true;
+		}
+		
+		
 		$connection->close();	
 
-		return true;
+		return $success;
 	}
 }
 

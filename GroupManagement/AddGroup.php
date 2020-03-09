@@ -55,7 +55,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/" method="POST">
+                                    <form action ="../Backend/add_group_to_db.php" method="POST">
                                         <?php
                                             if(isset($_SESSION["FormAccount"]))
                                                 unset($_SESSION["FormAccount"]);
@@ -90,32 +90,60 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <!--/MEMBERS-->
 
 										<!--PANELIST-->
+                                        <?php
+                                            $faculty = DBHandler::GetAccountsWithRole(2); // get all faculty accounts
+                                        ?>
                                         <div class="form-row mt-4 border-bottom">Panelist</div>
                                        	<div class="border-top border-bottom border-primary">
                                        		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1:</label>
-                                        	 <select class = "form-control" name = "Panel1">
+                                        	 <select class = "form-control" name = "PanelId[]">
                                         	 	<option disabled selected>Choose Panelist</option>
+                                                <?php
+                                                    foreach($faculty as $panel){
+                                                        ?>
+                                                        <option value="<?=$panel->id?>"><?=$panel->lastname.", ".$panel->firstname?></option>
+                                                        <?php
+                                                    }
+                                                ?>
                                              </select></div>
 
 	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 2:</label>
-	                                        <select class = "form-control" name = "Panel2">
+	                                        <select class = "form-control" name = "PanelId[]">
 	                                        	<option disabled selected>Choose Panelist</option>
+                                                <?php
+                                                    foreach($faculty as $panel){
+                                                        ?>
+                                                        <option value="<?=$panel->id?>"><?=$panel->lastname.", ".$panel->firstname?></option>
+                                                        <?php
+                                                    }
+                                                ?>
 	                                        </select></div>
 
 	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 3:</label>
-	                                        <select class = "form-control" name = "Panel3">
+	                                        <select class = "form-control" name = "PanelId[]">
 	                                        	<option disabled selected>Choose Panelist</option>
+                                                <?php
+                                                    foreach($faculty as $panel){
+                                                        ?>
+                                                        <option value="<?=$panel->id?>"><?=$panel->lastname.", ".$panel->firstname?></option>
+                                                        <?php
+                                                    }
+                                                ?>
 	                                        </select></div>
                                        	</div>
-                                        <!--PANELIST-->
+
+                                        <!--/PANELIST-->
+                                        <!--ADVISER-->
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputUsername">Select Adviser</label>
-                                            <select class = "form-control" name = "Role">
-                                                <?php 
-                                                    $roles = DBHandler::GetRoles();
-                                                    foreach($roles as $r){
+                                            <select class = "form-control" name = "AdviserId">
+                                                <option disabled selected>Choose Adviser</option>
+                                                <?php
+                                                    foreach($faculty as $adviser){
                                                         ?>
-                                                        <option value = "<?=$r->id?>"><?=$r->name?></option>
+                                                        <option value="<?=$adviser->id?>">
+                                                            <?=$adviser->lastname.", ".$adviser->firstname?>
+                                                        </option>
                                                         <?php
                                                     }
                                                 ?>
@@ -124,8 +152,8 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <div class="form-group mt-4 mb-0">
                                             <button class="btn btn-success" type = "submit">Add Group</button>
                                             <a class="btn btn-danger" role="button" href="ModifyAccounts.php">Cancel</a>
-
                                         </div>
+                                        <!--/ADVISER-->
                                     </form>
                                 </div>
                             </div>

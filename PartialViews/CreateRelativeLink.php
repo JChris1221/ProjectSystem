@@ -2,7 +2,7 @@
 function RelativeLink($link){
 	$rootFolderName = "ProjectSystem";
 
-	$suffix;
+	$prefix;
 	if(basename(getcwd()) == $rootFolderName){
   	  $prefix = "";
 	}
@@ -10,7 +10,7 @@ function RelativeLink($link){
       $prefix = "../";
 	}
 
-	$relLink = $suffix.$link;
+	$relLink = $prefix.$link;
 	return $relLink;
 }
 

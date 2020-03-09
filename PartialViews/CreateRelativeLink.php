@@ -1,13 +1,14 @@
 <?php
 function RelativeLink($link){
-	$rootFolderName = "ThesisGradingSystem";
+	$rootFolderName = "ProjectSystem";
 
 	$suffix;
 	if(basename(getcwd()) == $rootFolderName){
-  	  $suffix = "";
+  	  $prefix = "";
 	}
-	else
-    	$suffix = "../";
+	else{
+      $prefix = "../";
+	}
 
 	$relLink = $suffix.$link;
 	return $relLink;

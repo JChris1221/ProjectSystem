@@ -17,7 +17,7 @@ if(Empty($firstname)||Empty($lastname)||Empty($username)||Empty($roleid)){
 }
 else{
 	if(DBHandler::UpdateAccount($id, $firstname, $lastname, $username, $roleid)){
-		header("Location: ../AccountManagement/ModifyAccounts.php");
+		header("Location: ../AccountManagement/ManageAccounts.php");
 	}
 }
 

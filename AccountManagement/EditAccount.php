@@ -110,7 +110,7 @@ if($current_account === NULL){
                                         </div>
                                         <div class="form-group mt-4 mb-0">
                                             <button class="btn btn-success" type = "submit">Save Changes</button>
-                                            <a class="btn btn-danger" role="button" href="ModifyAccounts.php">Cancel</a>
+                                            <a class="btn btn-danger" role="button" href="ManageAccounts.php">Cancel</a>
                                         </div>
                                     </form>
                                 </div>

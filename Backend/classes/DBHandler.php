@@ -2,6 +2,7 @@
 require_once("Role.php");
 require_once("Account.php");
 require_once("Student.php");
+require_once("Group.php");
 
 class DBHandler
 {
@@ -439,6 +440,42 @@ class DBHandler
 
 		return $success;
 	}
+	public static function GetGroups(){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT *  FROM Groups");
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$rc = $stmt->execute();
+		if ( false===$rc ) {
+		  die('execute() failed: ' . htmlspecialchars($stmt->error));
+		}
+
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$groups = array();
+			while($row = $res->fetch_assoc()){
+				$id = $row['Id'];
+				$title = $row['Thesis_Title'];
+
+				array_push($groups, Group::Create($id, $title));
+			}
+			return $groups;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();	
+	}
+
 }
 
 ?>

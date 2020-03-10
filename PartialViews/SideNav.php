@@ -24,7 +24,7 @@ require_once ("CreateRelativeLink.php");
                     <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                     Schedules
                 </a>
-                <a class="nav-link disabled" href="tables.html">
+                <a class="nav-link" href=<?=RelativeLink("GroupManagement/ManageGroups.php")?>>
                     <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
                     Groups
                 </a>

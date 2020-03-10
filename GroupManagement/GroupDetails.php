@@ -1,7 +1,8 @@
 <?php
 require_once("../Backend/classes/Account.php");
 require_once("../Backend/classes/DBHandler.php");
-require_once("../Backend/classes/Role.php");
+require_once("../Backend/classes/Group.php");
+require_once("../Backend/classes/Student.php");
 
 session_start();
 if(!isset($_SESSION["Account"])){
@@ -11,6 +12,11 @@ if(!isset($_SESSION["Account"])){
 if($_SESSION["Account"]->roleid !== 1){
     header("Location: ../401.php");
 }
+
+$group = DBHandler::GetGroup($_GET['id']); // get group details
+$panels = DBHandler::GetGroupFaculty($_GET['id'], 3); // Get Panelist
+$students = DBHandler::GetGroupMembers($_GET['id']);
+$adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
 
 ?>
 
@@ -22,7 +28,7 @@ if($_SESSION["Account"]->roleid !== 1){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Add Group</title>
+        <title>Group Details</title>
         <link href="../css/styles.css" rel="stylesheet" />
         <link href="../css/bootstrap-sandstone.min.css" rel="stylesheet" />
 
@@ -43,8 +49,8 @@ if($_SESSION["Account"]->roleid !== 1){
                        <!--  <div class="card mb-4">
                             <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
                         </div> -->
-                         <div class="card my-4 mx-5 shadow border-success">
-                            <div class="card-header bg-success"><i class="fas fa-users"></i> Add Group</div>
+                         <div class="card my-4 mx-5 shadow border-secondary">
+                            <div class="card-header bg-secondary"><i class="fas fa-users"></i> Group Details</div>
                             <div class="card-body">
                                 <?php
                                     if(isset($_SESSION["AddUserError"])){ 
@@ -56,105 +62,55 @@ if($_SESSION["Account"]->roleid !== 1){
                                 ?>
                                 <div>
                                     <form action ="../Backend/add_group_to_db.php" method="POST">
-                                        <?php
-                                            if(isset($_SESSION["FormAccount"]))
-                                                unset($_SESSION["FormAccount"]);
-                                        ?>
+
                                         <!--TITLE-->
-                                        <div class="form-group"><label class="small mb-1" for="inputTitle">Thesis Title</label><input class="form-control py-4" id="inputTitle" type="text" aria-describedby="emailHelp" placeholder="Enter Thesis Title" name='Title'/></div>
+                                        <div class="form-group"><label class="small mb-1">Theisis Title</label><input class="form-control py-4" type="text" value = "<?=$group->title?>" disabled/></div>
                                         <!--/TITLE-->
 
                                         <!--MEMBERS-->
                                         <div class="form-row mt-4">Members</div>
                                         <div class="border-top border-bottom border-primary" id="memberContainer">
-                                            <div class = 'form-row align-items-center'>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputFirstName">First Name</label>
-                                                        <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" name = "Firstname[]" value = ""/>
+                                            <?php foreach($students as $s){ ?>
+                                                <div class = 'form-row align-items-center'>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="small mb-1" for="inputFirstName">First Name</label>
+                                                            <input class="form-control py-4" id="inputFirstName" type="text" value = "<?=$s->firstname?>" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="small mb-1" for="inputLastName">Last Name</label>
+                                                            <input class="form-control py-4" id="inputLastName" type="text" value="<?=$s->lastname?>" disabled />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <div class="form-group">
-                                                        <label class="small mb-1" for="inputLastName">Last Name</label>
-                                                        <input class="form-control py-4" id="inputLastName" name="Lastname[]" type="text" placeholder="Enter last name" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group pt-3">
-                                                        <button type="button" class="btn btn-success" id = "addStudent">Add Student</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <?php } ?>
                                         </div>
                                         <!--/MEMBERS-->
 
 										<!--PANELIST-->
                                         <?php
-                                            $group = DBHandler::GetGroup($_GET['id']); // get group details
-                                            $panels;
-                                            $students;
-                                            $adviser;
+                                            
                                         ?>
                                         <div class="form-row mt-4 border-bottom">Panelist</div>
                                        	<div class="border-top border-bottom border-primary">
-                                       		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1:</label>
-                                        	 <select class = "form-control" name = "PanelId[]">
-                                        	 	<option disabled selected>Choose Panelist</option>
-                                                <?php
-                                                    foreach($faculty as $panel){
-                                                        ?>
-                                                        <option value="<?=$panel->id?>"><?=$panel->lastname.", ".$panel->firstname?></option>
-                                                        <?php
-                                                    }
-                                                ?>
-                                             </select></div>
-
-	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 2:</label>
-	                                        <select class = "form-control" name = "PanelId[]">
-	                                        	<option disabled selected>Choose Panelist</option>
-                                                <?php
-                                                    foreach($faculty as $panel){
-                                                        ?>
-                                                        <option value="<?=$panel->id?>"><?=$panel->lastname.", ".$panel->firstname?></option>
-                                                        <?php
-                                                    }
-                                                ?>
-	                                        </select></div>
-
-	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 3:</label>
-	                                        <select class = "form-control" name = "PanelId[]">
-	                                        	<option disabled selected>Choose Panelist</option>
-                                                <?php
-                                                    foreach($faculty as $panel){
-                                                        ?>
-                                                        <option value="<?=$panel->id?>"><?=$panel->lastname.", ".$panel->firstname?></option>
-                                                        <?php
-                                                    }
-                                                ?>
-	                                        </select></div>
+                                       		<?php foreach ($panels as $p){ ?>
+                                                <div class="form-group pt-3">
+                                                    <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?= $p->lastname.', '.$p->firstname?>" disabled />
+                                                </div>
+                                            <?php } ?>
                                        	</div>
 
                                         <!--/PANELIST-->
                                         <!--ADVISER-->
                                         <div class="form-group">
-                                            <label class="small mb-1" for="inputUsername">Select Adviser</label>
-                                            <select class = "form-control" name = "AdviserId">
-                                                <option disabled selected>Choose Adviser</option>
-                                                <?php
-                                                    foreach($faculty as $adviser){
-                                                        ?>
-                                                        <option value="<?=$adviser->id?>">
-                                                            <?=$adviser->lastname.", ".$adviser->firstname?>
-                                                        </option>
-                                                        <?php
-                                                    }
-                                                ?>
-                                            </select>
+                                            <label class="small mb-1" for="inputUsername">Adviser</label>
+                                            <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
                                         </div>
                                         <div class="form-group mt-4 mb-0">
-                                            <button class="btn btn-success" type = "submit">Add Group</button>
-                                            <a class="btn btn-danger" role="button" href="ModifyAccounts.php">Cancel</a>
+                                            <button class="btn btn-info" type = "submit">Edit Group</button>
+                                            <a class="btn btn-secondary" role="button" href="ManageGroups.php">Go back</a>
                                         </div>
                                         <!--/ADVISER-->
                                     </form>
@@ -170,7 +126,6 @@ if($_SESSION["Account"]->roleid !== 1){
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="../js/scripts.js"></script>
-        <script src="../js/AddGroup.js"></script>
     </body>
 </html>
 

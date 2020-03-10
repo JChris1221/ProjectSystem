@@ -68,7 +68,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($groups !== NULL){
                                                     foreach($groups as $g){
                                                     ?>
-                                                        <tr><form action = "../Backend/GroupDetails.php?id=1" method="POST">
+                                                        <tr><form action = "GroupDetails.php?id=<?=$g->id?>" method="POST">
                                                             <td><?=$g->title?></td>
                                                             <td><button type = "submit" class = "btn btn-block btn-secondary">View Details</button></td>
                                                         </form></tr>

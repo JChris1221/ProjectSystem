@@ -14,6 +14,9 @@ class DBHandler
 	public function __construct(){
 	}
 
+
+	//-------------------------------------Accounts-----------------------------------------
+
 	//Returns an account object if login credientials is correct
 	public static function CheckLogin($username, $password){
 
@@ -377,6 +380,7 @@ class DBHandler
 		return true;
 	}
 
+	//-----------------------------------GROUPS-------------------------------------
 	public static function AddGroup($title, $panel_ids, $adviser_id, $members){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
@@ -440,6 +444,9 @@ class DBHandler
 
 		return $success;
 	}
+
+	
+
 	public static function GetGroups(){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
@@ -476,6 +483,109 @@ class DBHandler
 		$connection->close();	
 	}
 
+	public static function GetGroup($id){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT *  FROM Groups WHERE Id = ?");
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$stmt->bind_param('d', $id);
+		$stmt->execute();
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$row = $res->fetch_assoc();
+			
+			$id = $row['Id'];
+			$title = $row['Thesis_Title'];
+			$group = Group::Create($id, $title);
+			return $group;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();	
+	}
+
+	public static function GetGroupFaculty($groupId, $facultyId){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT Accounts.*  FROM Faculty_Assignment INNER JOIN Accounts ON Faculty_Assignment.Account_ID = Accounts.Id WHERE Group_Id = ? AND Faculty_Type_Id = ?");
+
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$stmt->bind_param("dd", $groupId, $facultyId);
+		$stmt->execute();
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$faculty = array();
+			while($row = $res->fetch_assoc()){
+				$id = $row['Id'];
+				$firstname = $row['Firstname'];
+				$lastname = $row['Lastname'];
+				$username = $row['Username'];
+				$roleId = $row['Role_Id'];
+
+				array_push($faculty, Account::CreateAccountWithInfo($id, $firstname, $lastname, $username, $roleId));
+			}
+			return $faculty;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();	
+	}
+
+	public static function GetGroupMembers($groupId){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT *  FROM Students WHERE Group_Id = ? ORDER BY Firstname");
+		
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$stmt->bind_param("d", $groupId);
+		$stmt->execute();
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$students = array();
+			while($row = $res->fetch_assoc()){
+				$id = $row['Id'];
+				$firstname = $row['Firstname'];
+				$lastname = $row['Lastname'];
+				$groupid = $row['Group_Id'];
+
+				array_push($students, Student::Create($id, $firstname, $lastname, $groupid));
+			}
+			return $students;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();
+	}
 }
 
 ?>

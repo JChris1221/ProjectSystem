@@ -151,7 +151,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         </div>
                                         <div class="form-group mt-4 mb-0">
                                             <button class="btn btn-success" type = "submit">Add Group</button>
-                                            <a class="btn btn-danger" role="button" href="ModifyAccounts.php">Cancel</a>
+                                            <a class="btn btn-danger" role="button" href="ManageAccounts.php">Cancel</a>
                                         </div>
                                         <!--/ADVISER-->
                                     </form>

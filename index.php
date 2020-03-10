@@ -1,6 +1,7 @@
 <?php
 require_once("Backend/classes/Account.php");
 require_once("Backend/classes/DBHandler.php");
+require_once("Backend/classes/Group.php");
 
 session_start();
 if(!isset($_SESSION["Account"])){
@@ -39,7 +40,39 @@ if(!isset($_SESSION["Account"])){
                             <div class="col-xl-6">
                                 <div class="card mb-4">
                                     <div class="card-header"><i class="fas fa-user-friends mr-1"></i>Groups</div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                                    <div class="card-body"> <div class="table-responsive">
+                                        <table class="table table-bordered" id="GroupsTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Thesis Title</th>
+                                                        <th>Adviser</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                        $groups = DBHandler::GetGroups();
+
+                                                        if($groups === NULL){
+                                                            echo "<tr><td colspan = '4'>No accounts yet.</td></tr>";
+                                                        }
+                                                        else
+                                                        {
+
+                                                            foreach ($groups as $g) {
+                                                                $adviser = DBHandler::GetGroupFaculty($g->id, 1);
+                                                                echo "<tr>";
+                                                                ?>
+                                                                    <td><?=$g->title?></td>
+                                                                    <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
+                                                                <?php
+                                                                echo "</tr>";
+                                                            }
+                                                        }
+
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div></div>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +84,7 @@ if(!isset($_SESSION["Account"])){
                                     <div class="card-header"><i class="fas fa-user mr-1"></i>Accounts</div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <table class="table table-bordered" id="AccountsTable" width="100%" cellspacing="0">
                                                 <thead>
                                                     <tr>
                                                         <th>First Name</th>
@@ -107,6 +140,6 @@ if(!isset($_SESSION["Account"])){
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-demo.js"></script>
+        <script src="js/datatables-demo.js?version=2"></script>
     </body>
 </html>

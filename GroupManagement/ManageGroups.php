@@ -68,7 +68,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($groups !== NULL){
                                                     foreach($groups as $g){
                                                     ?>
-                                                        <tr><form action = "../Backend/modify_check.php" method="GET">
+                                                        <tr><form action = "../Backend/modify_gorup_check.php" method="GET">
                                                             <input type = "hidden" value = "<?=$g->id?>" name = "id">
                                                             <td><?=$g->title?></td>
                                                             <td><input class = 'btn btn-info btn-block' type = submit value = "Edit" name="edit"></td>

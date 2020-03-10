@@ -22,7 +22,7 @@ else if($password !== $cpass){
 }
 else{
 	if(DBHandler::AddAccount($firstname, $lastname, $username, $password, $role)){
-		header("Location: ../AccountManagement/ModifyAccounts.php");
+		header("Location: ../AccountManagement/ManageAccounts.php");
 	}
 	else
 		die("Error Inserting to Database");

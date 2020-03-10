@@ -14,7 +14,7 @@ require_once ("CreateRelativeLink.php");
                 <?php 
                     if($_SESSION['Account']->roleid == 1){
                 ?>
-                        <a class="nav-link" href=<?=RelativeLink("AccountManagement/ModifyAccounts.php")?>>
+                        <a class="nav-link" href=<?=RelativeLink("AccountManagement/ManageAccounts.php")?>>
                             <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
                             Accounts
                         </a>

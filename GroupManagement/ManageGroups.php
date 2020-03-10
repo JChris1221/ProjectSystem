@@ -52,14 +52,14 @@ if($_SESSION["Account"]->roleid !== 1){
                                             <tr>
                                                 <th>Theisis Title</th>
                                                 <th>Edit</th>
-                                                <th>Delete</th>
+                                               
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>Theisis Title</th>
                                                 <th>Edit</th>
-                                                <th>Delete</th>
+                                                
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -68,11 +68,9 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($groups !== NULL){
                                                     foreach($groups as $g){
                                                     ?>
-                                                        <tr><form action = "../Backend/modify_gorup_check.php" method="GET">
-                                                            <input type = "hidden" value = "<?=$g->id?>" name = "id">
+                                                        <tr><form action = "../Backend/GroupDetails.php?id=1" method="POST">
                                                             <td><?=$g->title?></td>
-                                                            <td><input class = 'btn btn-info btn-block' type = submit value = "Edit" name="edit"></td>
-                                                            <td><input class = 'btn btn-danger btn-block' type = submit value = "Delete" name="del"></td>
+                                                            <td><button type = "submit" class = "btn btn-block btn-secondary">View Details</button></td>
                                                         </form></tr>
                                                     <?php
                                                     }

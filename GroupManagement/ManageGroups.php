@@ -51,14 +51,14 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <thead>
                                             <tr>
                                                 <th>Theisis Title</th>
-                                                <th>Edit</th>
+                                                <th>Details</th>
                                                
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>Theisis Title</th>
-                                                <th>Edit</th>
+                                                <th>Details</th>
                                                 
                                             </tr>
                                         </tfoot>
@@ -68,10 +68,12 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($groups !== NULL){
                                                     foreach($groups as $g){
                                                     ?>
-                                                        <tr><form action = "GroupDetails.php?id=<?=$g->id?>" method="POST">
+                                                        <tr>
                                                             <td><?=$g->title?></td>
-                                                            <td><button type = "submit" class = "btn btn-block btn-secondary">View Details</button></td>
-                                                        </form></tr>
+                                                            <td>
+                                                                <a class = "btn btn-block btn-secondary" href="GroupDetails.php?id=<?=$g->id?>">View Details</a>
+                                                            </td>
+                                                        </tr>
                                                     <?php
                                                     }
                                                 }

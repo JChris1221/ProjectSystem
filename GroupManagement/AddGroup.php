@@ -91,7 +91,7 @@ if($_SESSION["Account"]->roleid !== 1){
 
 										<!--PANELIST-->
                                         <?php
-                                            $faculty = DBHandler::GetAccountsWithRole(2); // get all faculty accounts
+                                            $faculty = DBHandler::GetAccountsWithRole(2); //get all faculty accounts
                                         ?>
                                         <div class="form-row mt-4 border-bottom">Panelist</div>
                                        	<div class="border-top border-bottom border-primary">

@@ -72,17 +72,21 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                         <div class="border-top border-bottom border-primary" id="memberContainer">
                                             <?php foreach($students as $s){ ?>
                                                 <div class = 'form-row align-items-center'>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="small mb-1" for="inputFirstName">First Name</label>
                                                             <input class="form-control py-4" id="inputFirstName" type="text" value = "<?=$s->firstname?>" disabled />
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="small mb-1" for="inputLastName">Last Name</label>
                                                             <input class="form-control py-4" id="inputLastName" type="text" value="<?=$s->lastname?>" disabled />
                                                         </div>
+                                                    </div>
+                                                    <div class = "col-md-3">                                                        
+                                                            <a class="btn btn-secondary" role="button" href="EditMember.php?id=<?=$s->id?>">Edit Member</a>
+                                                            <a class="btn btn-danger" role="button" href="DeleteMember.php?id=<?=$s->id?>">Delete Member</a>
                                                     </div>
                                                 </div>
                                             <?php } ?>
@@ -109,8 +113,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                             <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
                                         </div>
                                         <div class="form-group mt-4 mb-0">
-                                            <button class="btn btn-info" type = "submit">Edit Group</button>
-                                            <a class="btn btn-secondary" role="button" href="ManageGroups.php">Go back</a>
+                                            <a class="btn btn-secondary" role="button" href="ManageGroups.php">Back to group list</a>
                                         </div>
                                         <!--/ADVISER-->
                                     </form>

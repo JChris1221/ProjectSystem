@@ -14,6 +14,7 @@ if($_SESSION["Account"]->roleid !== 1){
 }
 
 $group = DBHandler::GetGroup($_GET['id']); // get group details
+$panelChair = DBHandler::GetGroupFaculty($_GET['id'], 2);
 $panels = DBHandler::GetGroupFaculty($_GET['id'], 3); // Get Panelist
 $students = DBHandler::GetGroupMembers($_GET['id']);
 $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
@@ -90,6 +91,9 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                     </div>
                                                 </div>
                                             <?php } ?>
+                                            <div class = 'form-row pb-3'>
+                                                <a href = 'AddMembers.php?groupid=<?=$_GET["id"]?>' class = 'btn btn-success'>Add Members</a>
+                                            </div>
                                         </div>
                                         <!--/MEMBERS-->
 
@@ -97,8 +101,14 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                         <?php
                                             
                                         ?>
-                                        <div class="form-row mt-4 border-bottom">Panelist</div>
+                                        <div class="form-row mt-4 border-bottom">Panelists</div>
                                        	<div class="border-top border-bottom border-primary">
+                                            
+                                            <div class="form-group pt-3">
+                                                <label class = 'small mb-1'>Panel Chair</label>
+                                                <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?= $panelChair[0]->lastname.', '.$panelChair[0]->firstname?>" disabled />
+                                            </div>
+                                            
                                        		<?php foreach ($panels as $p){ ?>
                                                 <div class="form-group pt-3">
                                                     <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?= $p->lastname.', '.$p->firstname?>" disabled />

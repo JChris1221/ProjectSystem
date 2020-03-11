@@ -95,8 +95,8 @@ if($_SESSION["Account"]->roleid !== 1){
                                         ?>
                                         <div class="form-row mt-4 border-bottom">Panelist</div>
                                        	<div class="border-top border-bottom border-primary">
-                                       		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1:</label>
-                                        	 <select class = "form-control" name = "PanelId[]">
+                                       		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1 (Panel Chair):</label>
+                                        	 <select class = "form-control" name = "PanelChairId">
                                         	 	<option disabled selected>Choose Panelist</option>
                                                 <?php
                                                     foreach($faculty as $panel){

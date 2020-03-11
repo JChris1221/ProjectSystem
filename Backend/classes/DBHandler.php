@@ -381,7 +381,7 @@ class DBHandler
 	}
 
 	//-----------------------------------GROUPS-------------------------------------
-	public static function AddGroup($title, $panel_ids, $adviser_id, $members){
+	public static function AddGroup($title, $panel_chair_id, $panel_ids, $adviser_id, $members){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
 		if($connection->connect_error)
@@ -408,6 +408,9 @@ class DBHandler
 
 			// if($faculty_stmt === false)
 			// 	die("Error preparing statement: ".$connection->error);
+			$pc = 2;
+			$faculty_stmt->bind_param('ddd', $groupid, $panel_chair_id, $pc); //Panel Chair
+			$faculty_stmt->execute();
 
 			foreach($panel_ids as $pid){
 				$p = 3;
@@ -634,8 +637,13 @@ class DBHandler
 		  die('prepare() failed: ' . htmlspecialchars($connection->error));
 		}
 
-		$stmt->bind_param("ssd", $firstname, $lastname, $id);
-		$stmt->execute();
+		if(!$stmt->bind_param("ssd", $firstname, $lastname, $id)){
+			die("error binding params");
+		}
+		
+		if($stmt->execute() === false){
+			die("error executing query");
+		}
 
 		if($stmt->affected_rows == 0){
 			$success = false;
@@ -647,6 +655,68 @@ class DBHandler
 		$stmt->close();
 		$connection->close();
 		return $success;
+	}
+
+	public function DeleteMember($id){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("DELETE FROM Students WHERE Id = ?");
+		
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		if(!$stmt->bind_param("d",$id)){
+			die("error binding params");
+		}
+		
+		if($stmt->execute() === false){
+			die("error executing query");
+		}
+
+		if($stmt->affected_rows == 0){
+			$success = false;
+		}
+		else{
+			$success = true;
+		}
+
+		$stmt->close();
+		$connection->close();
+		return $success;
+	}
+
+	public static function AddStudents($students){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("INSERT INTO Students (Firstname, Lastname, Group_Id) VALUES (?,?,?)");
+		
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		foreach($students as $s){
+			if(!$stmt->bind_param("ssd",$s->firstname,$s->lastname, $s->groupid)){
+				die("error binding params");
+			}
+			
+			if($stmt->execute() === false){
+				die("error executing query");
+			}
+			if($stmt->affected_rows == 0){
+				die("error inserting on of the records");
+			}
+		}
+
+		$stmt->close();
+		$connection->close();
+		return true;
 	}
 }
 

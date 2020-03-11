@@ -1,8 +1,6 @@
 <?php
-require_once("../Backend/classes/Account.php");
 require_once("../Backend/classes/DBHandler.php");
 require_once("../Backend/classes/Group.php");
-require_once("../Backend/classes/Student.php");
 
 session_start();
 if(!isset($_SESSION["Account"])){
@@ -13,8 +11,7 @@ if($_SESSION["Account"]->roleid !== 1){
     header("Location: ../401.php");
 }
 
-$student = DBHandler::GetStudent($_GET['id']);
-$group = DBHandler::GetGroup($student->groupid); // get group details
+$group = DBHandler::GetGroup($_GET['groupid']);
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +22,7 @@ $group = DBHandler::GetGroup($student->groupid); // get group details
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Group Details</title>
+        <title>Add Group</title>
         <link href="../css/styles.css" rel="stylesheet" />
         <link href="../css/bootstrap-sandstone.min.css" rel="stylesheet" />
 
@@ -46,42 +43,51 @@ $group = DBHandler::GetGroup($student->groupid); // get group details
                        <!--  <div class="card mb-4">
                             <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
                         </div> -->
-                         <div class="card my-4 mx-5 shadow border-secondary">
-                            <div class="card-header bg-secondary"><i class="fas fa-users"></i> Edit Member (<?=$group->title?>)</div>
+                         <div class="card my-4 mx-5 shadow border-success">
+                            <div class="card-header bg-success"><i class="fas fa-users"></i> Add Members (<?=$group->title?>)</div>
                             <div class="card-body">
                                 <?php
-                                    if(isset($_SESSION["UpdateMemberError"])){ 
+                                    if(isset($_SESSION["AddUserError"])){ 
                                         ?>
-                                        <span class = "text-danger" ><?php echo $_SESSION["UpdateMemberError"]; ?></span>
+                                        <span class = "text-danger" ><?php echo $_SESSION["AddUserError"]; ?></span>
                                         <?php
-                                        unset($_SESSION["UpdateMemberError"]);
+                                        unset($_SESSION["AddUserError"]);
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/update_member_to_db.php" method="POST">
-
+                                    <form action ="../Backend/add_members_to_db.php" method="POST">
+                                        <?php
+                                            if(isset($_SESSION["FormAccount"]))
+                                                unset($_SESSION["FormAccount"]);
+                                        ?>
+                                        <input type = "hidden" name = "id" value = "<?=$_GET['groupid']?>">
                                         <!--MEMBERS-->
                                         <div class="border-top border-bottom border-primary" id="memberContainer">
-                                                <div class = 'form-row align-items-center'>
-                                                    <input type ="hidden" name = "id" value = "<?=$_GET['id']?>">
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="small mb-1" for="inputFirstName">First Name</label>
-                                                            <input class="form-control py-4" id="inputFirstName" type="text" value = "<?=$student->firstname?>" name = "Firstname"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <div class="form-group">
-                                                            <label class="small mb-1" for="inputLastName">Last Name</label>
-                                                            <input class="form-control py-4" id="inputLastName" type="text" value="<?=$student->lastname?>" name = "Lastname" />
-                                                        </div>
+                                            <div class = 'form-row align-items-center'>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputFirstName">First Name</label>
+                                                        <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" name = "Firstname[]" value = ""/>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="small mb-1" for="inputLastName">Last Name</label>
+                                                        <input class="form-control py-4" id="inputLastName" name="Lastname[]" type="text" placeholder="Enter last name" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group pt-3">
+                                                        <button type="button" class="btn btn-success" id = "addStudent">+</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group mt-4 mb-0">
-                                            <button type = 'submit' class = 'btn btn-info'>Save Changes</button>
+                                            <button type = 'submit' class = 'btn btn-success'>Add Members</button>
                                             <a class="btn btn-secondary" role="button" href="GroupDetails.php?id=<?=$group->id?>">Cancel</a>
                                         </div>
+                                        <!--/MEMBERS-->
                                     </form>
                                 </div>
                             </div>
@@ -95,6 +101,7 @@ $group = DBHandler::GetGroup($student->groupid); // get group details
         <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="../js/scripts.js"></script>
+        <script src="../js/AddGroup.js"></script>
     </body>
 </html>
 

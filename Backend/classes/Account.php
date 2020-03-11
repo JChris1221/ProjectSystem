@@ -2,7 +2,7 @@
 //Redirects user if no account is logged in
 class Account{
 	public $id;
-	public $fistname;
+	public $firstname;
 	public $lastname;
 	public $username;
 	public $roleid;

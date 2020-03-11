@@ -1,6 +1,7 @@
 <?php
 require_once("../Backend/classes/Group.php");
 require_once("../Backend/classes/DBHandler.php");
+require_once("../Backend/classes/Account.php");
 
 session_start();
 if(!isset($_SESSION["Account"])){
@@ -51,6 +52,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <thead>
                                             <tr>
                                                 <th>Theisis Title</th>
+                                                <th>Adviser</th>
                                                 <th>Details</th>
                                                
                                             </tr>
@@ -58,6 +60,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <tfoot>
                                             <tr>
                                                 <th>Theisis Title</th>
+                                                <th>Adviser</th>
                                                 <th>Details</th>
                                                 
                                             </tr>
@@ -67,9 +70,11 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 $groups = DBHandler::GetGroups();
                                                 if($groups !== NULL){
                                                     foreach($groups as $g){
+                                                        $adviser = DBHandler::GetGroupFaculty($g->id, 1);
                                                     ?>
                                                         <tr>
                                                             <td><?=$g->title?></td>
+                                                            <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
                                                             <td>
                                                                 <a class = "btn btn-block btn-secondary" href="GroupDetails.php?id=<?=$g->id?>">View Details</a>
                                                             </td>

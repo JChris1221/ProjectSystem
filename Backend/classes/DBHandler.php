@@ -551,6 +551,41 @@ class DBHandler
 		$connection->close();	
 	}
 
+	public static function GetStudent($id){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT *  FROM Students WHERE Id = ?");
+		
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$stmt->bind_param("d", $id);
+		$stmt->execute();
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+
+			$row = $res->fetch_assoc();
+			$id = $row['Id'];
+			$firstname = $row['Firstname'];
+			$lastname = $row['Lastname'];
+			$groupid = $row['Group_Id'];
+
+			$student= Student::Create($id, $firstname,$lastname,$groupid);
+
+			return $student;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();
+	}
 	public static function GetGroupMembers($groupId){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
@@ -585,6 +620,33 @@ class DBHandler
 
 		$stmt->close();
 		$connection->close();
+	}
+
+	public function UpdateMemberInfo($id, $firstname, $lastname){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("UPDATE students SET Firstname = ?, Lastname = ? WHERE Id = ?");
+		
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$stmt->bind_param("ssd", $firstname, $lastname, $id);
+		$stmt->execute();
+
+		if($stmt->affected_rows == 0){
+			$success = false;
+		}
+		else{
+			$success = true;
+		}
+
+		$stmt->close();
+		$connection->close();
+		return $success;
 	}
 }
 

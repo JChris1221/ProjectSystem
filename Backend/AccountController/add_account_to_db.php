@@ -1,6 +1,6 @@
 <?php
-require_once("classes/Account.php");
-require_once("classes/DBHandler.php");
+require_once("../classes/Account.php");
+require_once("../classes/DBHandler.php");
 session_start();
 
 $firstname = $_POST['Firstname'];

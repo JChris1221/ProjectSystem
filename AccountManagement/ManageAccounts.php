@@ -85,7 +85,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                                 <a class = 'btn btn-info btn-block' href = "EditAccount.php?id=<?=$a->id?>">Edit</a>
                                                             </td>
                                                             <td><a class = 'btn btn-danger btn-block' href = "DeleteAccount.php?id=<?=$a->id?>">Delete</a></td>
-                                                            <td><a class = 'btn btn-warning btn-block' href = "#">Reset Password</a></td>
+                                                            <td><a class = 'btn btn-warning btn-block disabled' href = "#">Reset Password</a></td>
                                                         </form></tr>
                                                     <?php
                                                     }

@@ -1,5 +1,5 @@
 <?php
-require_once("classes/DBHandler.php");
+require_once("../classes/DBHandler.php");
 
 $id = $_POST['Id'];
 if(DBHandler::DeleteAccount($id)){

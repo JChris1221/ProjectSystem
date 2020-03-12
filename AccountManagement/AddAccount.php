@@ -54,7 +54,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/add_account_to_db.php" method="POST">
+                                    <form action ="../Backend/AccountController/add_account_to_db.php" method="POST">
                                         <?php
                                             if(isset($_SESSION["FormAccount"]))
                                                 unset($_SESSION["FormAccount"]);

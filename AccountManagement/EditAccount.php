@@ -72,7 +72,7 @@ if($current_account === NULL){
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/update_account_to_db.php" method="POST">
+                                    <form action ="../Backend/AccountController/update_account_to_db.php" method="POST">
                                         <input type = "hidden" name = 'Id' value = <?=$_GET['id']?>>
                                         <?php
                                             if(isset($_SESSION["FormAccount"]))

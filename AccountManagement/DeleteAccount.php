@@ -57,7 +57,7 @@ if($_SESSION["Account"]->roleid !== 1){
                             <div class="card-body">
                                 
                                 <div>
-                                    <form action ="../Backend/delete_account_from_db.php" method="POST">
+                                    <form action ="../Backend/AccountController/delete_account_from_db.php" method="POST">
                                         <input type = "hidden" name = 'Id' value = <?=$_GET['id']?>>
                                         <div class="form-row">
                                             <div class="col-md-6">

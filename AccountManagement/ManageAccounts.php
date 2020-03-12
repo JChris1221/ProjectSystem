@@ -76,7 +76,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($accounts !== NULL){
                                                     foreach($accounts as $a){
                                                     ?>
-                                                        <tr><form action = "../Backend/modify_account_check.php" method="GET">
+                                                        <tr><form action = "../Backend/AccountController/modify_account_check.php" method="GET">
                                                             <input type = "hidden" value = "<?=$a->id?>" name = "id">
                                                             <td><?=$a->firstname?></td>
                                                             <td><?=$a->lastname?></td>

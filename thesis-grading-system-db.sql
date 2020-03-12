@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2020 at 04:30 PM
+-- Generation Time: Mar 12, 2020 at 12:19 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -68,7 +68,15 @@ INSERT INTO `faculty_assignment` (`Group_Id`, `Account_Id`, `Faculty_Type_Id`) V
 (14, 5, 3),
 (14, 6, 3),
 (14, 7, 1),
-(14, 8, 3);
+(14, 8, 2),
+(15, 5, 1),
+(15, 6, 3),
+(15, 7, 2),
+(15, 8, 3),
+(16, 5, 1),
+(16, 6, 2),
+(16, 7, 3),
+(16, 8, 3);
 
 -- --------------------------------------------------------
 
@@ -106,7 +114,9 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`Id`, `Thesis_Title`) VALUES
-(14, 'Side effects of programming');
+(14, 'Side effects of programming'),
+(15, 'Test title'),
+(16, 'Cacophony and Outrage in Programming: Valuing Oppressive Ethnicity');
 
 -- --------------------------------------------------------
 
@@ -146,7 +156,12 @@ CREATE TABLE `students` (
 
 INSERT INTO `students` (`Id`, `Firstname`, `Lastname`, `Group_Id`) VALUES
 (4, 'Fabio', 'Ratcliffe', 14),
-(5, 'Saul', 'Xiong', 14);
+(5, 'Saul', 'Xiong', 14),
+(7, 'Latoya', 'Turner', 15),
+(8, 'Isla', 'Harell', 15),
+(11, 'Timothy', 'Wallis', 15),
+(12, 'Wasim', 'Tang', 16),
+(13, 'Laibah', 'Farrow', 16);
 
 --
 -- Indexes for dumped tables
@@ -206,13 +221,13 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

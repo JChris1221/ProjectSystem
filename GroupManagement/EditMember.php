@@ -58,7 +58,7 @@ $group = DBHandler::GetGroup($student->groupid); // get group details
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/update_member_to_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/update_member_to_db.php" method="POST">
 
                                         <!--MEMBERS-->
                                         <div class="border-top border-bottom border-primary" id="memberContainer">

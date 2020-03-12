@@ -58,7 +58,7 @@ $faculty = DBHandler::GetAccountsWithRole(2);
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/update_adviser_to_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/update_adviser_to_db.php" method="POST">
                                         <?php
                                             if(isset($_SESSION["FormAccount"]))
                                                 unset($_SESSION["FormAccount"]);

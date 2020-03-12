@@ -51,7 +51,7 @@ $group = DBHandler::GetGroup($student->groupid); // get group details
                             <div class="card-body">
                                 <span class = "text-danger" ><i class="fas fa-exclamation-triangle"></i> Are you sure you want to remove this member? (This action can't be undone)</span>
                                 <div>
-                                    <form action ="../Backend/delete_member_from_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/delete_member_from_db.php" method="POST">
                                         <!--MEMBERS-->
                                         <div class="border-top border-bottom border-primary" id="memberContainer">
                                                 <div class = 'form-row align-items-center'>

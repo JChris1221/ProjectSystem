@@ -63,7 +63,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/delete_group_from_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/delete_group_from_db.php" method="POST">
                                         <input type="hidden" name="id" value="<?=$_GET['id']?>"/>
 
                                         <!--TITLE-->

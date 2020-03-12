@@ -62,7 +62,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/add_group_to_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/add_group_to_db.php" method="POST">
 
                                         <!--TITLE-->
                                         <div class="form-group"><label class="small mb-1">Theisis Title</label><input class="form-control py-4" type="text" value = "<?=htmlspecialchars($group->title)?>" disabled/></div>

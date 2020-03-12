@@ -55,7 +55,7 @@ $group = DBHandler::GetGroup($_GET['groupid']);
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/add_members_to_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/add_members_to_db.php" method="POST">
                                         <?php
                                             if(isset($_SESSION["FormAccount"]))
                                                 unset($_SESSION["FormAccount"]);

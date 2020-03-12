@@ -55,7 +55,7 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                             <div class="card-header bg-info"><i class="fas fa-users"></i> Edit Panels (<?=htmlspecialchars($group->title)?>)</div>
                             <div class="card-body">
                                 <div>
-                                    <form action ="../Backend/update_panels_to_db.php" method="POST">
+                                    <form action ="../Backend/GroupController/update_panels_to_db.php" method="POST">
 
 										<!--PANELIST-->
                                         <?php

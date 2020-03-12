@@ -47,11 +47,11 @@ if($_SESSION["Account"]->roleid !== 1){
                             <div class="card-header bg-success"><i class="fas fa-users"></i> Add Group</div>
                             <div class="card-body">
                                 <?php
-                                    if(isset($_SESSION["AddUserError"])){ 
+                                    if(isset($_SESSION["AddGroupError"])){ 
                                         ?>
-                                        <span class = "text-danger" ><?php echo $_SESSION["AddUserError"]; ?></span>
+                                        <span class = "text-danger" ><?php echo $_SESSION["AddGroupError"]; ?></span>
                                         <?php
-                                        unset($_SESSION["AddUserError"]);
+                                        unset($_SESSION["AddGroupError"]);
                                     }
                                 ?>
                                 <div>
@@ -121,7 +121,7 @@ if($_SESSION["Account"]->roleid !== 1){
 
 	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 3:</label>
 	                                        <select class = "form-control" name = "PanelId[]">
-	                                        	<option disabled selected>Choose Panelist</option>
+	                                        	<option disabled selected >Choose Panelist</option>
                                                 <?php
                                                     foreach($faculty as $panel){
                                                         ?>
@@ -137,7 +137,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputUsername">Select Adviser</label>
                                             <select class = "form-control" name = "AdviserId">
-                                                <option disabled selected>Choose Adviser</option>
+                                                <option disabled selected >Choose Adviser</option>
                                                 <?php
                                                     foreach($faculty as $adviser){
                                                         ?>

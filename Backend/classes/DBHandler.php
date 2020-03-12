@@ -827,6 +827,24 @@ class DBHandler
 
 		return true;
 	}
+
+	public static function UpdateTitle($groupid, $new_title){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		//Update Panel Chair
+		$stmt = $connection->prepare("UPDATE Groups SET Thesis_Title = ? WHERE Id = ?");
+
+		$facultyid = 2;//Panel Chair
+		if(!$stmt->bind_param("sd", $new_title, $groupid))
+			die("error binding parameters");
+
+		$stmt->execute();
+
+		return true;
+	}
 }
 
 ?>

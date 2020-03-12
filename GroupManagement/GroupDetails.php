@@ -62,10 +62,13 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/GroupController/add_group_to_db.php" method="POST">
-
-                                        <!--TITLE-->
-                                        <div class="form-group"><label class="small mb-1">Theisis Title</label><input class="form-control py-4" type="text" value = "<?=htmlspecialchars($group->title)?>" disabled/></div>
+                                        <!--TITLE--> 
+                                        <div class="form-group"><label class="small mb-1">Thesis Title</label><input class="form-control py-4" type="text" value = "<?=htmlspecialchars($group->title)?>" disabled/></div>
+                                            
+                                        <div class = "form-group">
+                                            <a class = "btn btn-info" href = "EditTitle.php?id=<?=$group->id?>">Edit Thesis Title</a>
+                                        </div>
+                                        
                                         <!--/TITLE-->
 
                                         <!--MEMBERS-->
@@ -137,7 +140,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                             <a class="btn btn-secondary" role="button" href="ManageGroups.php">Back to group list</a>
                                         </div>
                                         <!--/ADVISER-->
-                                    </form>
+                                    
                                 </div>
                             </div>
                         </div>

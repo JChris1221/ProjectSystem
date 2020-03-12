@@ -115,7 +115,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                 </div>
                                             <?php } ?>
                                             <div class = 'form-row py-3 pl-1'>
-                                                <a href = "ChangePanels.php?groupid=<?=$_GET['id']?>" class = "btn btn-info">Change Panelists</a>
+                                                <a href = "ChangePanels.php?id=<?=$_GET['id']?>" class = "btn btn-info">Change Panelists</a>
                                             </div>
                                        	</div>
 

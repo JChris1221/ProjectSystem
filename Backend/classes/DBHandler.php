@@ -761,15 +761,17 @@ class DBHandler
 		$stmt = $connection->prepare("UPDATE Faculty_Assignment SET Account_Id = ? WHERE Group_Id = ? AND Faculty_Type_Id = ?");
 
 		$facultyid = 2;//Panel Chair
-		if(!$stmt->bind_param("ddd", $adviserid, $groupid, $facultyid))
+		if(!$stmt->bind_param("ddd", $panelchair, $groupid, $facultyid))
 			die("error binding parameters");
+
+
 
 		$stmt->execute();
 		$stmt->close();
 
 		//Delete Current Panels
 		$facultyid = 3;//Panelists
-		$del_stmt = $connection->prepare("DELETE FROM Faculty_Assignment WHERE Group_Id = ? AND Faculty_Type_Id = ?")
+		$del_stmt = $connection->prepare("DELETE FROM Faculty_Assignment WHERE Group_Id = ? AND Faculty_Type_Id = ?");
 
 		if(!$del_stmt->bind_param("dd", $groupid, $facultyid))
 			die("error binding parameters");
@@ -779,11 +781,14 @@ class DBHandler
 
 		//Insert new panels
 		$ins_stmt = $connection->prepare("INSERT INTO  Faculty_Assignment (Group_Id, Account_Id, Faculty_Type_Id) VALUES (?,?,?)");
+
 		foreach($panelists as $p){
-			if(!$stmt->bind_param("ddd", $groupid,$p, $facultyid)){
+			if(!$ins_stmt->bind_param("ddd", $groupid,$p, $facultyid)){
 				die("error binding insert parameters");
 			}
 			$ins_stmt->execute();
+			if($ins_stmt->affected_rows == 0)
+				die("not inserted to db");
 		}
 
 		$ins_stmt->close();

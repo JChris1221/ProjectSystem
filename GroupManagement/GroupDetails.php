@@ -65,7 +65,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                     <form action ="../Backend/add_group_to_db.php" method="POST">
 
                                         <!--TITLE-->
-                                        <div class="form-group"><label class="small mb-1">Theisis Title</label><input class="form-control py-4" type="text" value = "<?=$group->title?>" disabled/></div>
+                                        <div class="form-group"><label class="small mb-1">Theisis Title</label><input class="form-control py-4" type="text" value = "<?=htmlspecialchars($group->title)?>" disabled/></div>
                                         <!--/TITLE-->
 
                                         <!--MEMBERS-->
@@ -76,13 +76,13 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="small mb-1" for="inputFirstName">First Name</label>
-                                                            <input class="form-control py-4" id="inputFirstName" type="text" value = "<?=$s->firstname?>" disabled />
+                                                            <input class="form-control py-4" id="inputFirstName" type="text" value = "<?=htmlspecialchars($s->firstname)?>" disabled />
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="small mb-1" for="inputLastName">Last Name</label>
-                                                            <input class="form-control py-4" id="inputLastName" type="text" value="<?=$s->lastname?>" disabled />
+                                                            <input class="form-control py-4" id="inputLastName" type="text" value="<?=htmlspecialchars($s->lastname)?>" disabled />
                                                         </div>
                                                     </div>
                                                     <div class = "col-md-3">                                                        

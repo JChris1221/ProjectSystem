@@ -29,7 +29,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Group Details</title>
+        <title>Delete Group</title>
         <link href="../css/styles.css" rel="stylesheet" />
         <link href="../css/bootstrap-sandstone.min.css" rel="stylesheet" />
 
@@ -50,9 +50,10 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                        <!--  <div class="card mb-4">
                             <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
                         </div> -->
-                         <div class="card my-4 mx-5 shadow border-secondary">
-                            <div class="card-header bg-secondary"><i class="fas fa-users"></i> Group Details</div>
+                         <div class="card my-4 mx-5 shadow border-danger">
+                            <div class="card-header bg-danger"><i class="fas fa-users"></i> Group Details</div>
                             <div class="card-body">
+                                <span class = "text-danger" ><i class="fas fa-exclamation-triangle"></i> Are you sure you want to remove this group? (This action can't be undone)</span>
                                 <?php
                                     if(isset($_SESSION["AddUserError"])){ 
                                         ?>
@@ -62,7 +63,8 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                     }
                                 ?>
                                 <div>
-                                    <form action ="../Backend/add_group_to_db.php" method="POST">
+                                    <form action ="../Backend/delete_group_from_db.php" method="POST">
+                                        <input type="hidden" name="id" value="<?=$_GET['id']?>"/>
 
                                         <!--TITLE-->
                                         <div class="form-group"><label class="small mb-1">Theisis Title</label><input class="form-control py-4" type="text" value = "<?=htmlspecialchars($group->title)?>" disabled/></div>
@@ -85,15 +87,8 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                             <input class="form-control py-4" id="inputLastName" type="text" value="<?=htmlspecialchars($s->lastname)?>" disabled />
                                                         </div>
                                                     </div>
-                                                    <div class = "col-md-3">                                                        
-                                                            <a class="btn btn-secondary" href="EditMember.php?id=<?=$s->id?>">Edit Member</a>
-                                                            <a class="btn btn-danger" href="DeleteMember.php?id=<?=$s->id?>">Remove Member</a>
-                                                    </div>
                                                 </div>
                                             <?php } ?>
-                                            <div class = "form-row py-3 pl-1">
-                                                <a href = "AddMembers.php?groupid=<?=$_GET['id']?>" class = 'btn btn-success'>Add Members</a>
-                                            </div>
                                         </div>
                                         <!--/MEMBERS-->
 
@@ -114,26 +109,16 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                     <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?= $p->lastname.', '.$p->firstname?>" disabled />
                                                 </div>
                                             <?php } ?>
-                                            <div class = 'form-row py-3 pl-1'>
-                                                <a href = "ChangePanels.php?id=<?=$_GET['id']?>" class = "btn btn-info">Change Panelists</a>
-                                            </div>
                                        	</div>
 
                                         <!--/PANELIST-->
                                         <!--ADVISER-->
-                                        <div class="form-group">
-                                            <div class = 'form-row align-items-center'>
-                                                <div class = 'col-md-6'>
-                                                    <label class="small mb-1" for="inputUsername">Adviser</label>
-                                                    <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
-                                                </div>
-                                                <div class = 'col-md-2 pt-3'>
-                                                    <a class = "btn btn-secondary btn-info" href = "ChangeAdviser.php?id=<?=$_GET['id']?>">Change Adviser</a>
-                                                </div>
-                                            </div>
+                                        <div class="form-group"> 
+                                            <label class="small mb-1" for="inputUsername">Adviser</label>
+                                            <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
                                         </div>
                                         <div class="form-group mt-4 mb-0">
-                                            <a class="btn btn-danger" href="DeleteGroup.php?id=<?=$_GET['id']?>">Remove Group</a>
+                                            <button class = "btn btn-danger" type="submit">Remove Group</button>
                                             <a class="btn btn-secondary" role="button" href="ManageGroups.php">Back to group list</a>
                                         </div>
                                         <!--/ADVISER-->

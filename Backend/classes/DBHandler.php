@@ -799,6 +799,34 @@ class DBHandler
 
 		return $success;
 	}
+
+	public static function DeleteGroup($groupid){
+		
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		//Delete Members
+		$mem_stmt = $connection->prepare("DELETE FROM Students WHERE Group_Id = ?");
+		$mem_stmt->bind_param('d', $groupid);
+		$mem_stmt->execute();
+		$mem_stmt->close();
+
+		//Delete Panels & Advisers
+		$fac_stmt = $connection->prepare("DELETE FROM Faculty_Assignment WHERE Group_Id = ?");
+		$fac_stmt->bind_param('d', $groupid);
+		$fac_stmt->execute();
+		$fac_stmt->close();
+
+		//Delete Group
+		$grp_stmt = $connection->prepare("DELETE FROM Groups WHERE Id = ?");
+		$grp_stmt->bind_param('d', $groupid);
+		$grp_stmt->execute();
+		$grp_stmt->close();
+
+		return true;
+	}
 }
 
 ?>

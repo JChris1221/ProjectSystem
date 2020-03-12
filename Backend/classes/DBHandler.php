@@ -718,6 +718,82 @@ class DBHandler
 		$connection->close();
 		return true;
 	}
+
+	public static function UpdateAdviser($groupid, $adviserid){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("UPDATE Faculty_Assignment SET Account_Id = ? WHERE Group_Id = ? AND Faculty_Type_Id = ?");
+		
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$facultyid = 1;
+		if(!$stmt->bind_param("ddd", $adviserid, $groupid, $facultyid))
+			die("error binding params");
+		
+		if($stmt->execute() === false){
+			die("error executing query");
+		}
+
+		if($stmt->affected_rows == 0){
+			$success = false;
+		}
+		else{
+			$success = true;
+		}
+
+		$stmt->close();
+		$connection->close();
+		return $success;
+	}
+
+	public static function UpdatePanels($panelchair, $panelists, $groupid){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		//Update Panel Chair
+		$stmt = $connection->prepare("UPDATE Faculty_Assignment SET Account_Id = ? WHERE Group_Id = ? AND Faculty_Type_Id = ?");
+
+		$facultyid = 2;//Panel Chair
+		if(!$stmt->bind_param("ddd", $adviserid, $groupid, $facultyid))
+			die("error binding parameters");
+
+		$stmt->execute();
+		$stmt->close();
+
+		//Delete Current Panels
+		$facultyid = 3;//Panelists
+		$del_stmt = $connection->prepare("DELETE FROM Faculty_Assignment WHERE Group_Id = ? AND Faculty_Type_Id = ?")
+
+		if(!$del_stmt->bind_param("dd", $groupid, $facultyid))
+			die("error binding parameters");
+
+		$del_stmt->execute();
+		$del_stmt->close();
+
+		//Insert new panels
+		$ins_stmt = $connection->prepare("INSERT INTO  Faculty_Assignment (Group_Id, Account_Id, Faculty_Type_Id) VALUES (?,?,?)");
+		foreach($panelists as $p){
+			if(!$stmt->bind_param("ddd", $groupid,$p, $facultyid)){
+				die("error binding insert parameters");
+			}
+			$ins_stmt->execute();
+		}
+
+		$ins_stmt->close();
+		
+
+		$success = true;
+		$connection->close();
+
+		return $success;
+	}
 }
 
 ?>

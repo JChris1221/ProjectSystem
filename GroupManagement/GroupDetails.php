@@ -128,7 +128,7 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                     <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
                                                 </div>
                                                 <div class = 'col-md-2 pt-3'>
-                                                    <a class = "btn btn-secondary btn-info" href = "ChangeAdviser.php?id=<?=$group->$_GET['id']?>">Change Adviser</a>
+                                                    <a class = "btn btn-secondary btn-info" href = "ChangeAdviser.php?id=<?=$_GET['id']?>">Change Adviser</a>
                                                 </div>
                                             </div>
                                         </div>

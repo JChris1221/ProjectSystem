@@ -76,15 +76,16 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($accounts !== NULL){
                                                     foreach($accounts as $a){
                                                     ?>
-                                                        <tr><form action = "../Backend/AccountController/modify_account_check.php" method="GET">
-                                                            <input type = "hidden" value = "<?=$a->id?>" name = "id">
+                                                        <tr>
                                                             <td><?=$a->firstname?></td>
                                                             <td><?=$a->lastname?></td>
                                                             <td><?=$a->username?></td>
                                                             <td><?=$a->rolename?></td>
-                                                            <td><input class = 'btn btn-info btn-block' type = submit value = "Edit" name="edit"></td>
-                                                            <td><input class = 'btn btn-danger btn-block' type = submit value = "Delete" name="del"></td>
-                                                            <td><input class = 'btn btn-warning btn-block' disabled type = submit value = "Reset Password" name="reset"></td>
+                                                            <td>
+                                                                <a class = 'btn btn-info btn-block' href = "EditAccount.php?id=<?=$a->id?>">Edit</a>
+                                                            </td>
+                                                            <td><a class = 'btn btn-danger btn-block' href = "DeleteAccount.php?id=<?=$a->id?>">Delete</a></td>
+                                                            <td><a class = 'btn btn-warning btn-block' href = "#">Reset Password</a></td>
                                                         </form></tr>
                                                     <?php
                                                     }

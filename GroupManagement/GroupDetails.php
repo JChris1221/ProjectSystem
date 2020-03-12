@@ -91,8 +91,8 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                     </div>
                                                 </div>
                                             <?php } ?>
-                                            <div class = 'form-row pb-3'>
-                                                <a href = 'AddMembers.php?groupid=<?=$_GET["id"]?>' class = 'btn btn-success'>Add Members</a>
+                                            <div class = "form-row py-3 pl-1">
+                                                <a href = "AddMembers.php?groupid=<?=$_GET['id']?>" class = 'btn btn-success'>Add Members</a>
                                             </div>
                                         </div>
                                         <!--/MEMBERS-->
@@ -114,13 +114,23 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                                     <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?= $p->lastname.', '.$p->firstname?>" disabled />
                                                 </div>
                                             <?php } ?>
+                                            <div class = 'form-row py-3 pl-1'>
+                                                <a href = "ChangePanels.php?groupid=<?=$_GET['id']?>" class = "btn btn-info">Change Panelists</a>
+                                            </div>
                                        	</div>
 
                                         <!--/PANELIST-->
                                         <!--ADVISER-->
                                         <div class="form-group">
-                                            <label class="small mb-1" for="inputUsername">Adviser</label>
-                                            <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
+                                            <div class = 'form-row align-items-center'>
+                                                <div class = 'col-md-6'>
+                                                    <label class="small mb-1" for="inputUsername">Adviser</label>
+                                                    <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" value = "<?=$adviser[0]->lastname . ', '.$adviser[0]->firstname?>" disabled />
+                                                </div>
+                                                <div class = 'col-md-2 pt-3'>
+                                                    <a class = "btn btn-secondary btn-info" href = "ChangeAdviser.php?id=<?=$group->$_GET['id']?>">Change Adviser</a>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group mt-4 mb-0">
                                             <a class="btn btn-secondary" role="button" href="ManageGroups.php">Back to group list</a>

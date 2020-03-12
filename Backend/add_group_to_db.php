@@ -44,9 +44,9 @@ else{
 		array_push($students, $s);
 	}
 
-	// if(DBHandler::AddGroup($thesis_title, $panel_chair, $panelist, $adviser, $students))
-	// 	header("Location: ../GroupManagement/AddGroup.php");
-	// else
-	// 	die("Error Adding Group");
+	if(DBHandler::AddGroup($thesis_title, $panel_chair, $panelist, $adviser, $students))
+		header("Location: ../GroupManagement/ManageGroups.php");
+	else
+		die("Error Adding Group");
 }
 ?>

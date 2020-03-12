@@ -1,6 +1,6 @@
 <?php
-require_once("classes/Student.php");
-require_once("classes/DBHandler.php");
+require_once("../classes/Student.php");
+require_once("../classes/DBHandler.php");
 
 $groupid = $_POST['id'];
 $firstnames = $_POST["Firstname"];
@@ -12,7 +12,7 @@ foreach($firstnames as $key=>$value){
 }
 
 if(DBHandler::AddStudents($students)){
-	header("Location: ../GroupManagement/GroupDetails.php?id=".$groupid);
+	header("Location: ../../GroupManagement/GroupDetails.php?id=".$groupid);
 }
 else
 	echo "Error Adding Students";

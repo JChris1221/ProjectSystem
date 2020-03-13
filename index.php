@@ -30,103 +30,19 @@ if(!isset($_SESSION["Account"])){
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4">Welcome, <?php echo $_SESSION['Account']->firstname;?></h1>
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header"><i class="fas fa-table mr-1"></i>Schedules</div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header"><i class="fas fa-user-friends mr-1"></i>Groups</div>
-                                    <div class="card-body"> <div class="table-responsive">
-                                        <table class="table table-bordered" id="GroupsTable" width="100%" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Thesis Title</th>
-                                                        <th>Adviser</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                        $groups = DBHandler::GetGroups();
-
-                                                        if($groups === NULL){
-                                                            echo "<tr><td colspan = '4'>No accounts yet.</td></tr>";
-                                                        }
-                                                        else
-                                                        {
-
-                                                            foreach ($groups as $g) {
-                                                                $adviser = DBHandler::GetGroupFaculty($g->id, 1);
-                                                                echo "<tr>";
-                                                                ?>
-                                                                    <td><?=$g->title?></td>
-                                                                    <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
-                                                                <?php
-                                                                echo "</tr>";
-                                                            }
-                                                        }
-
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div></div>
-                                </div>
-                            </div>
-                        </div>
+                        
+                            
                         <?php
-                            //IF AcCOUNT IS ADMIN PRINT ACCOUNT TABLE
-                            if($_SESSION['Account']->roleid == 1){
+                            if($_SESSION['Account']->roleid == 1)
+                                include("PartialViews/GroupManagementTable.php");
                         ?>
-                                <div class="card mb-4">
-                                    <div class="card-header"><i class="fas fa-user mr-1"></i>Accounts</div>
-                                    <div class="card-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered" id="AccountsTable" width="100%" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>First Name</th>
-                                                        <th>Last Name</th>
-                                                        <th>Username</th>
-                                                        <th>Role</th>
-                                                    </tr>
-                                                </thead>
-                                                <tfoot>
-                                                    <th>First Name</th>
-                                                        <th>Last Name</th>
-                                                        <th>Username</th>
-                                                        <th>Role</th>
-                                                </tfoot>
-                                                <tbody>
-                                                    <?php
-                                                        $accounts = DBHandler::GetAccounts($_SESSION["Account"]->id);
-                                                        if($accounts === NULL){
-                                                            echo "<tr><td colspan = '4'>No accounts yet.</td></tr>";
-                                                        }
-                                                        else
-                                                        {
-                                                            foreach ($accounts as $a) {
-                                                                echo "<tr>";
-                                                                ?>
-                                                                    <td><?=$a->firstname?></td>
-                                                                    <td><?=$a->lastname?></td>
-                                                                    <td><?=$a->username?></td>
-                                                                    <td><?=$a->rolename?></td>
-                                                                <?php
-                                                                echo "</tr>";
-                                                            }
-                                                        }
+                        
+                        <?php
 
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
+                            if($_SESSION['Account']->roleid == 1)
+                                include("PartialViews/AccountManagementTable.php");
 
-                        <?php }//END IF ?>
+                        ?>
                     </div>
                 </main>
                 <?php include("PartialViews/Footer.php"); ?>

@@ -10,24 +10,37 @@ require_once ("CreateRelativeLink.php");
                     ><div class="sb-nav-link-icon"><i class="fas fa-home"></i></i></div>
                     Dashboard</a
                 >
-                <div class="sb-sidenav-menu-heading">View</div>
-                <?php 
-                    if($_SESSION['Account']->roleid == 1){
-                ?>
-                        <a class="nav-link" href=<?=RelativeLink("AccountManagement/ManageAccounts.php")?>>
-                            <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                            Accounts
-                        </a>
-                <?php } #ENDIF ?>
 
-                <a class="nav-link disabled" href="tables.html">
-                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                    Schedules
-                </a>
-                <a class="nav-link" href=<?=RelativeLink("GroupManagement/ManageGroups.php")?>>
-                    <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
-                    Groups
-                </a>
+                <!-- Admin Only -->
+                <?php if($_SESSION['Account']->roleid == 1){ ?>
+                    <div class="sb-sidenav-menu-heading">Manage</div>
+                  
+                    <a class="nav-link" href=<?=RelativeLink("AccountManagement/ManageAccounts.php")?>>
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Accounts
+                    </a>
+
+                    <a class="nav-link" href=<?=RelativeLink("GroupManagement/ManageGroups.php")?>>
+                        <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
+                        Groups
+                    </a>
+                <?php } ?>
+                <!-- /Admin Only -->
+
+                <!-- Faculty -->
+                <?php if($_SESSION['Account']->roleid == 2){ ?>
+                    <div class="sb-sidenav-menu-heading">Panelist</div>
+                    <a class="nav-link" href=<?=RelativeLink("GroupEvaluation/ManageAccounts.php")?>>
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Evaluate Groups
+                    </a>
+                    <div class="sb-sidenav-menu-heading">Adviser</div>
+                    <a class="nav-link" href=<?=RelativeLink("AdviserMonitor/ManageAccounts.php")?>>
+                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+                        Advised Groups
+                    </a>
+                <?php } ?>
+                <!-- /Faculty -->
             </div>
         </div>
         <div class="sb-sidenav-footer">

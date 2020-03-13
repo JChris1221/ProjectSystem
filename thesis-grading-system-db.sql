@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 13, 2020 at 03:22 PM
+-- Generation Time: Mar 13, 2020 at 05:43 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -57,8 +57,28 @@ INSERT INTO `accounts` (`Id`, `Username`, `Password`, `Firstname`, `Lastname`, `
 CREATE TABLE `criteria` (
   `Id` int(11) NOT NULL,
   `Title` varchar(255) NOT NULL,
-  `Weight` int(11) NOT NULL
+  `Weight` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `criteria`
+--
+
+INSERT INTO `criteria` (`Id`, `Title`, `Weight`) VALUES
+(1, 'Content', 0.066),
+(2, 'Organization', 0.066),
+(3, 'Use of Reference', 0.066),
+(4, 'Tone', 0.066),
+(5, 'Instructional Content 1', 0.066),
+(6, 'Instructional Content 2', 0.066),
+(7, 'Instructional Content 3', 0.066),
+(8, 'Instructional Content 4', 0.066),
+(9, 'Instructional Content 5', 0.066),
+(10, 'Layout 1', 0.066),
+(11, 'Layout 2', 0.066),
+(13, 'Layout 3', 0.066),
+(14, 'Layout 4', 0.066),
+(15, 'Complete', 0.066);
 
 -- --------------------------------------------------------
 
@@ -262,19 +282,19 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables

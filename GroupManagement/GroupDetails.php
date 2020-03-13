@@ -18,6 +18,7 @@ $panelChair = DBHandler::GetGroupFaculty($_GET['id'], 2);
 $panels = DBHandler::GetGroupFaculty($_GET['id'], 3); // Get Panelist
 $students = DBHandler::GetGroupMembers($_GET['id']);
 $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
+$prof = DBHandler::GetGroupFaculty($_GET['id'], 4);
 
 ?>
 
@@ -70,6 +71,20 @@ $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
                                         </div>
                                         
                                         <!--/TITLE-->
+
+                                        <!--PROFESSOR & SECTION-->
+                                        <div class = 'form-row align-items-center'>
+                                            <div class = 'col-md-6'>
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputUsername">Professor</label>
+                                                    <input class="form-control py-4" type="text" value = "<?=htmlspecialchars($prof[0]->lastname.', '.$prof[0]->firstname)?>" disabled/>        
+                                                </div>
+                                            </div>
+                                            <div class = 'col-md-3'>
+                                                <div class="form-group"><label class="small mb-1" for="inputSection">Section</label><input class="form-control py-4" id="inputSection" type="text" value = "<?=htmlspecialchars($group->section)?>"disabled/></div>
+                                            </div>
+                                        </div>
+                                        <!--/PROFESSOR & SECTION-->
 
                                         <!--MEMBERS-->
                                         <div class="form-row mt-4">Members</div>

@@ -12,6 +12,8 @@ if($_SESSION["Account"]->roleid !== 1){
     header("Location: ../401.php");
 }
 
+$faculty = DBHandler::GetAccountsWithRole(2); //get all faculty accounts
+
 ?>
 
 <!DOCTYPE html>
@@ -63,7 +65,28 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <!--TITLE-->
                                         <div class="form-group"><label class="small mb-1" for="inputTitle">Thesis Title</label><input class="form-control py-4" id="inputTitle" type="text" aria-describedby="emailHelp" placeholder="Enter Thesis Title" name='Title'/></div>
                                         <!--/TITLE-->
-
+                                        <div class = 'form-row align-items-center'>
+                                            <div class = 'col-md-6'>
+                                                <div class="form-group">
+                                                    <label class="small mb-1" for="inputUsername">Select Professor</label>
+                                                    <select class = "form-control" name = "ProfessorId">
+                                                        <option disabled selected >Choose Professor</option>
+                                                        <?php
+                                                            foreach($faculty as $adviser){
+                                                                ?>
+                                                                <option value="<?=$adviser->id?>">
+                                                                    <?=$adviser->lastname.", ".$adviser->firstname?>
+                                                                </option>
+                                                                <?php
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class = 'col-md-3'>
+                                                <div class="form-group"><label class="small mb-1" for="inputSection">Section</label><input class="form-control py-4" id="inputSection" type="text" placeholder="Enter Section" name='Section'/></div>
+                                            </div>
+                                        </div>
                                         <!--MEMBERS-->
                                         <div class="form-row mt-4">Members</div>
                                         <div class="border-top border-bottom border-primary" id="memberContainer">
@@ -90,9 +113,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <!--/MEMBERS-->
 
 										<!--PANELIST-->
-                                        <?php
-                                            $faculty = DBHandler::GetAccountsWithRole(2); //get all faculty accounts
-                                        ?>
+                                        
                                         <div class="form-row mt-4 border-bottom">Panelist</div>
                                        	<div class="border-top border-bottom border-primary">
                                        		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1 (Panel Chair):</label>
@@ -149,6 +170,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 ?>
                                             </select>
                                         </div>
+
                                         <div class="form-group mt-4 mb-0">
                                             <button class="btn btn-success" type = "submit">Add Group</button>
                                             <a class="btn btn-danger" role="button" href="ManageGroups.php">Cancel</a>

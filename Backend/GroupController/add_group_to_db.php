@@ -9,7 +9,11 @@ require_once("../classes/Account.php");
 
 
 //Check if panelists have same ids;
-if(in_array("", $_POST["Firstname"]) || in_array("", $_POST["Lastname"]) || empty($_POST["Title"])){
+if(in_array("", $_POST["Firstname"]) || in_array("", $_POST["Lastname"]) || empty($_POST["Title"]) || empty($_POST["Section"])){
+	$_SESSION["AddGroupError"]	= "Please Fill Empty Fields";
+	header("Location: ../../GroupManagement/AddGroup.php");
+}
+else if(!isset($_POST["ProfessorId"])){
 	$_SESSION["AddGroupError"]	= "Please Fill Empty Fields";
 	header("Location: ../../GroupManagement/AddGroup.php");
 }
@@ -30,6 +34,8 @@ else if(!isset($_POST["AdviserId"])){
 	header("Location: ../../GroupManagement/AddGroup.php");
 }
 else{
+	$section = $_POST["Section"];
+	$profid = $_POST["ProfessorId"];
 	$stud_fname = $_POST["Firstname"];
 	$stud_lname = $_POST["Lastname"];
 	$thesis_title = $_POST["Title"];
@@ -44,7 +50,7 @@ else{
 		array_push($students, $s);
 	}
 
-	if(DBHandler::AddGroup($thesis_title, $panel_chair, $panelist, $adviser, $students))
+	if(DBHandler::AddGroup($thesis_title, $panel_chair, $panelist, $adviser, $students, $profid, $section))
 		header("Location: ../../GroupManagement/ManageGroups.php");
 	else
 		die("Error Adding Group");

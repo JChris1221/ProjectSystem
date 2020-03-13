@@ -381,19 +381,19 @@ class DBHandler
 	}
 
 	//-----------------------------------GROUPS-------------------------------------
-	public static function AddGroup($title, $panel_chair_id, $panel_ids, $adviser_id, $members){
+	public static function AddGroup($title, $panel_chair_id, $panel_ids, $adviser_id, $members, $prof_id, $section){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$stmt = $connection->prepare("INSERT INTO Groups (Thesis_Title) VALUES (?)");
+		$stmt = $connection->prepare("INSERT INTO Groups (Thesis_Title, Section) VALUES (?, ?)");
 
 		if ( false===$stmt ) {
 		  die('prepare() failed: ' . htmlspecialchars($connection->error));
 		}
 
-		$stmt->bind_param('s', $title);
+		$stmt->bind_param('ss', $title, $section);
 		$stmt->execute();
 
 		if($stmt->affected_rows == 0){
@@ -408,7 +408,7 @@ class DBHandler
 
 			// if($faculty_stmt === false)
 			// 	die("Error preparing statement: ".$connection->error);
-			$pc = 2;
+			$pc = 2; //Panel Chair Role
 			$faculty_stmt->bind_param('ddd', $groupid, $panel_chair_id, $pc); //Panel Chair
 			$faculty_stmt->execute();
 
@@ -419,12 +419,22 @@ class DBHandler
 				$faculty_stmt->execute();
 			}
 
-			$a = 1;
+			$a = 1; //Adviser Role
 			
 			if($faculty_stmt->bind_param('ddd', $groupid, $adviser_id, $a)===false)
 				die("error binding params in adviser");
 
+
 			$faculty_stmt->execute();
+
+			$prof = 4; //Professor Role
+			if($faculty_stmt->bind_param('ddd', $groupid, $prof_id, $prof)===false)
+				die("error binding params in adviser");
+			
+			$faculty_stmt->execute();
+
+
+
 			$faculty_stmt->close();
 
 			//For group members
@@ -473,8 +483,44 @@ class DBHandler
 			while($row = $res->fetch_assoc()){
 				$id = $row['Id'];
 				$title = $row['Thesis_Title'];
+				$section = $row['Section'];
 
-				array_push($groups, Group::Create($id, $title));
+				array_push($groups, Group::Create($id, $title, $section));
+			}
+			return $groups;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();	
+	}
+
+	public function GetGroupsOfFaculty($id, $faculty_type){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT *  FROM Groups WHERE Account_Id = ? AND Faculty_Type_Id = ?");
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$stmt->bind_param($id, $faculty_type);
+		$stmt->execute();
+		
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$groups = array();
+			while($row = $res->fetch_assoc()){
+				$id = $row['Id'];
+				$title = $row['Thesis_Title'];
+				$section = $row['Section'];
+
+				array_push($groups, Group::Create($id, $title, $section));
 			}
 			return $groups;
 		}
@@ -506,7 +552,9 @@ class DBHandler
 			
 			$id = $row['Id'];
 			$title = $row['Thesis_Title'];
-			$group = Group::Create($id, $title);
+			$section = $row['Section'];
+
+			$group = Group::Create($id, $title, $section);
 			return $group;
 		}
 		else{
@@ -813,7 +861,7 @@ class DBHandler
 		$mem_stmt->execute();
 		$mem_stmt->close();
 
-		//Delete Panels & Advisers
+		//Delete Panels, Adviser & Professor
 		$fac_stmt = $connection->prepare("DELETE FROM Faculty_Assignment WHERE Group_Id = ?");
 		$fac_stmt->bind_param('d', $groupid);
 		$fac_stmt->execute();

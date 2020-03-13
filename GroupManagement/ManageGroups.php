@@ -52,17 +52,20 @@ if($_SESSION["Account"]->roleid !== 1){
                                         <thead>
                                             <tr>
                                                 <th>Theisis Title</th>
+                                                <th>Section</th>
+                                                <th>Professor</th>
                                                 <th>Adviser</th>
                                                 <th>Details</th>
-                                               
+                                                
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <th>Theisis Title</th>
+                                                <th>Section</th>
+                                                <th>Professor</th>
                                                 <th>Adviser</th>
                                                 <th>Details</th>
-                                                
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -71,12 +74,16 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 if($groups !== NULL){
                                                     foreach($groups as $g){
                                                         $adviser = DBHandler::GetGroupFaculty($g->id, 1);
+                                                        $professor = DBHandler::GetGroupFaculty($g->id, 4);
                                                     ?>
                                                         <tr>
                                                             <td><?=$g->title?></td>
+                                                            <td><?=$g->section?></td>
+                                                            <td><?=$professor[0]->lastname.", ".$professor[0]->firstname?></td>
                                                             <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
+                                                            
                                                             <td>
-                                                                <a class = "btn btn-block btn-secondary" href="GroupDetails.php?id=<?=$g->id?>">View Details</a>
+                                                                <a class = "btn btn-block btn-secondary" href="GroupDetails.php?id=<?=$g->id?>">View More</a>
                                                             </td>
                                                         </tr>
                                                     <?php

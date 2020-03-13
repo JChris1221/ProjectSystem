@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2020 at 12:19 PM
+-- Generation Time: Mar 13, 2020 at 03:22 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -51,6 +51,18 @@ INSERT INTO `accounts` (`Id`, `Username`, `Password`, `Firstname`, `Lastname`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `criteria`
+--
+
+CREATE TABLE `criteria` (
+  `Id` int(11) NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `Weight` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `faculty_assignment`
 --
 
@@ -65,18 +77,21 @@ CREATE TABLE `faculty_assignment` (
 --
 
 INSERT INTO `faculty_assignment` (`Group_Id`, `Account_Id`, `Faculty_Type_Id`) VALUES
-(14, 5, 3),
-(14, 6, 3),
-(14, 7, 1),
-(14, 8, 2),
-(15, 5, 1),
-(15, 6, 3),
-(15, 7, 2),
-(15, 8, 3),
 (16, 5, 1),
 (16, 6, 2),
 (16, 7, 3),
-(16, 8, 3);
+(16, 7, 4),
+(16, 8, 3),
+(18, 5, 3),
+(18, 6, 2),
+(18, 7, 1),
+(18, 8, 3),
+(18, 8, 4),
+(19, 5, 2),
+(19, 6, 1),
+(19, 6, 4),
+(19, 7, 3),
+(19, 8, 3);
 
 -- --------------------------------------------------------
 
@@ -96,7 +111,21 @@ CREATE TABLE `faculty_types` (
 INSERT INTO `faculty_types` (`Id`, `Name`) VALUES
 (1, 'Adviser'),
 (2, 'Panel Chair'),
-(3, 'Panelist');
+(3, 'Panelist'),
+(4, 'Professor');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grades`
+--
+
+CREATE TABLE `grades` (
+  `Grade` int(11) NOT NULL,
+  `Criteria_Id` int(11) NOT NULL,
+  `Group_Id` int(11) NOT NULL,
+  `Panelist_Id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -106,17 +135,18 @@ INSERT INTO `faculty_types` (`Id`, `Name`) VALUES
 
 CREATE TABLE `groups` (
   `Id` int(11) NOT NULL,
-  `Thesis_Title` varchar(255) DEFAULT NULL
+  `Thesis_Title` varchar(255) DEFAULT NULL,
+  `Section` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `groups`
 --
 
-INSERT INTO `groups` (`Id`, `Thesis_Title`) VALUES
-(14, 'Side effects of programming'),
-(15, 'Test title'),
-(16, 'Cacophony and Outrage in Programming: Valuing Oppressive Ethnicity');
+INSERT INTO `groups` (`Id`, `Thesis_Title`, `Section`) VALUES
+(16, 'Cacophony and Outrage in Programming: Valuing Oppressive Ethnicity', 'J4S'),
+(18, 'Artificial Intelligence Can\'t Ever Turn Robots Into Humans Who Can Think and Feel Emotions', 'J4T'),
+(19, 'Neural Network on Chip Analysis', 'J4V');
 
 -- --------------------------------------------------------
 
@@ -155,13 +185,17 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`Id`, `Firstname`, `Lastname`, `Group_Id`) VALUES
-(4, 'Fabio', 'Ratcliffe', 14),
-(5, 'Saul', 'Xiong', 14),
-(7, 'Latoya', 'Turner', 15),
-(8, 'Isla', 'Harell', 15),
-(11, 'Timothy', 'Wallis', 15),
 (12, 'Wasim', 'Tang', 16),
-(13, 'Laibah', 'Farrow', 16);
+(13, 'Laibah', 'Farrow', 16),
+(15, 'Aurora', 'Kurr', 18),
+(16, 'Isobella', 'Bray', 18),
+(17, 'Sean', 'Newton', 18),
+(18, 'Aamir', 'Wilkinson', 18),
+(19, 'Naima', 'Kavanagh', 18),
+(20, 'Safia', 'Waller', 19),
+(21, 'Dougie', 'Schmitt', 19),
+(22, 'Alix', 'Hoover', 19),
+(23, 'Logan', 'Plant', 19);
 
 --
 -- Indexes for dumped tables
@@ -173,6 +207,12 @@ INSERT INTO `students` (`Id`, `Firstname`, `Lastname`, `Group_Id`) VALUES
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`Id`),
   ADD KEY `RoleId` (`Role_Id`);
+
+--
+-- Indexes for table `criteria`
+--
+ALTER TABLE `criteria`
+  ADD PRIMARY KEY (`Id`);
 
 --
 -- Indexes for table `faculty_assignment`
@@ -187,6 +227,13 @@ ALTER TABLE `faculty_assignment`
 --
 ALTER TABLE `faculty_types`
   ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `grades`
+--
+ALTER TABLE `grades`
+  ADD PRIMARY KEY (`Panelist_Id`,`Group_Id`),
+  ADD KEY `Group_Id` (`Group_Id`);
 
 --
 -- Indexes for table `groups`
@@ -215,19 +262,19 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `groups`
 --
 ALTER TABLE `groups`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables
@@ -246,6 +293,13 @@ ALTER TABLE `faculty_assignment`
   ADD CONSTRAINT `faculty_assignment_ibfk_1` FOREIGN KEY (`Group_Id`) REFERENCES `groups` (`Id`),
   ADD CONSTRAINT `faculty_assignment_ibfk_2` FOREIGN KEY (`Account_Id`) REFERENCES `accounts` (`Id`),
   ADD CONSTRAINT `faculty_assignment_ibfk_3` FOREIGN KEY (`Faculty_Type_Id`) REFERENCES `faculty_types` (`Id`);
+
+--
+-- Constraints for table `grades`
+--
+ALTER TABLE `grades`
+  ADD CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`Group_Id`) REFERENCES `groups` (`Id`),
+  ADD CONSTRAINT `grades_ibfk_2` FOREIGN KEY (`Panelist_Id`) REFERENCES `accounts` (`Id`);
 
 --
 -- Constraints for table `students`

@@ -503,24 +503,22 @@ class DBHandler
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$stmt = $connection->prepare("SELECT *  FROM Groups WHERE Account_Id = ? AND Faculty_Type_Id = ?");
+		$stmt = $connection->prepare("SELECT *  FROM Faculty_Assignment WHERE Account_Id = ? AND Faculty_Type_Id = ?");
 		if ( false===$stmt ) {
 		  die('prepare() failed: ' . htmlspecialchars($connection->error));
 		}
 
-		$stmt->bind_param($id, $faculty_type);
+		$stmt->bind_param('dd', $id, $faculty_type);
 		$stmt->execute();
-		
+
 		$res = $stmt->get_result();
 
 		if($res->num_rows > 0){
 			$groups = array();
 			while($row = $res->fetch_assoc()){
-				$id = $row['Id'];
-				$title = $row['Thesis_Title'];
-				$section = $row['Section'];
+				$g = self::GetGroup($row['Group_Id']);
 
-				array_push($groups, Group::Create($id, $title, $section));
+				array_push($groups, $g);
 			}
 			return $groups;
 		}

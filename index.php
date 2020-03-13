@@ -33,15 +33,15 @@ if(!isset($_SESSION["Account"])){
                         
                             
                         <?php
-                            if($_SESSION['Account']->roleid == 1)
+                            if($_SESSION['Account']->roleid == 1){
                                 include("PartialViews/GroupManagementTable.php");
-                        ?>
-                        
-                        <?php
-
-                            if($_SESSION['Account']->roleid == 1)
                                 include("PartialViews/AccountManagementTable.php");
-
+                            }
+                            else{
+                                include("PartialViews/AdvisedGroupsTable.php");
+                                include("PartialViews/PaneledGroupsTable.php");
+                                include("PartialViews/ThesisStudentsTable.php");
+                            }
                         ?>
                     </div>
                 </main>
@@ -56,6 +56,6 @@ if(!isset($_SESSION["Account"])){
         <script src="assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-demo.js?version=2"></script>
+        <script src="js/datatables-demo.js?version=3"></script>
     </body>
 </html>

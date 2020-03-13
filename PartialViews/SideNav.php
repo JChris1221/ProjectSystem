@@ -29,15 +29,17 @@ require_once ("CreateRelativeLink.php");
 
                 <!-- Faculty -->
                 <?php if($_SESSION['Account']->roleid == 2){ ?>
-                    <div class="sb-sidenav-menu-heading">Panelist</div>
+                    <div class="sb-sidenav-menu-heading">Groups</div>
                     <a class="nav-link" href=<?=RelativeLink("GroupEvaluation/ManageAccounts.php")?>>
-                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                        Evaluate Groups
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-bar"></i> Evaluate Groups</div>
+                        
                     </a>
-                    <div class="sb-sidenav-menu-heading">Adviser</div>
                     <a class="nav-link" href=<?=RelativeLink("AdviserMonitor/ManageAccounts.php")?>>
-                        <div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
-                        Advised Groups
+                        <div class="sb-nav-link-icon"><i class="fas fa-hands-helping"></i> Advised Groups</div>
+                        
+                    </a>
+                     <a class="nav-link" href=<?=RelativeLink("AdviserMonitor/ManageAccounts.php")?>>
+                        <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i> Thesis Students</div>
                     </a>
                 <?php } ?>
                 <!-- /Faculty -->

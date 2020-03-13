@@ -5,7 +5,8 @@
                 <thead>
                     <tr>
                         <th>Thesis Title</th>
-                        <th>Adviser</th>
+                        <th>Section</th>
+                        <th>Professor</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -19,11 +20,13 @@
                         {
 
                             foreach ($groups as $g) {
-                                $adviser = DBHandler::GetGroupFaculty($g->id, 1);
+                                $prof = DBHandler::GetGroupFaculty($g->id, 4);
                                 echo "<tr>";
                                 ?>
                                     <td><?=$g->title?></td>
-                                    <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
+                                    <td><?=$g->section?></td>
+                                    <td><?=$prof[0]->lastname.", ".$prof[0]->firstname?></td>
+
                                 <?php
                                 echo "</tr>";
                             }

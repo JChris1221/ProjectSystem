@@ -50,7 +50,7 @@ $criteria = DBHandler::GetCriteria();
                             <div class="card-body">
                                 
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-bordered" width="100%" cellspacing="0">
+                                    <table class="table table-sm table-bordered" id= "dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr align="center">
                                                 <th>Criteria</th>
@@ -62,7 +62,9 @@ $criteria = DBHandler::GetCriteria();
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           
+                                           <form action="../Backend/EvaluationController/add_grades_to_db.php" method="POST">
+                                            <input type ="hidden" value = "<?=$_GET['id']?>" name="groupid">
+                                            <input type ="hidden" value = "<?=$_SESSION['Account']->id?>" name="id">
                                             <!--DOCUMENTS-->
                                             <tr align="center" class='table-primary'><th colspan="6">Document</th></tr>
                                             <?php for($x = 0; $x < 3; $x++){ ?>
@@ -81,6 +83,7 @@ $criteria = DBHandler::GetCriteria();
                                             <tr align="center" class='table-primary'><th colspan="6">Presentation</th></tr>
                                             <?php for($x = 3; $x < 5; $x++){ ?>
                                                 <tr>
+                                                    
                                                     <th class='align-middle text-center'><?=$criteria[$x]->title?></th>
                                                     <td><?=$criteria[$x]->descriptions[0]?></td>
                                                     <td><?=$criteria[$x]->descriptions[1]?></td>
@@ -91,8 +94,50 @@ $criteria = DBHandler::GetCriteria();
                                             <?php } ?>
                                             <!--/PRESENTATION-->
 
+                                            <!--INSTRUCTIONAL CONTENT-->
+                                            <tr align="center" class='table-primary'><th colspan="6">Software</th></tr>
+                                            <?php for($x = 5; $x < 10; $x++){ ?>
+                                                <tr>
+                                                    <?php if($x == 5){?>
+                                                        <th class='align-middle text-center' rowspan ="5">Instructional Content</th>
+                                                    <?php }?>
+                                                    <td><?=$criteria[$x]->descriptions[0]?></td>
+                                                    <td><?=$criteria[$x]->descriptions[1]?></td>
+                                                    <td><?=$criteria[$x]->descriptions[2]?></td>
+                                                    <td><?=$criteria[$x]->descriptions[3]?></td>
+                                                    <td class='align-middle'><input type="text" name="Score[]" class = 'form-control'></td>
+                                                </tr>
+                                            <?php } ?>
+                                            <!--/INSTRUCTIONAL CONTENT-->
+
+                                            <!--LAYOUT-->
+                                            <?php for($x = 10; $x < 14; $x++){ ?>
+                                                <tr>
+                                                    <?php if($x == 10){?>
+                                                        <th class='align-middle text-center' rowspan ="4">Layout</th>
+                                                    <?php }?>
+                                                    <td><?=$criteria[$x]->descriptions[0]?></td>
+                                                    <td><?=$criteria[$x]->descriptions[1]?></td>
+                                                    <td><?=$criteria[$x]->descriptions[2]?></td>
+                                                    <td><?=$criteria[$x]->descriptions[3]?></td>
+                                                    <td class='align-middle'><input type="text" name="Score[]" class = 'form-control'></td>
+                                                </tr>
+                                            <?php } ?>
+                                            <!--/LAYOUT-->
+                                            <tr>
+                                                <th class='align-middle text-center'>Complete</th>
+                                                <td><?=$criteria[14]->descriptions[0]?></td>
+                                                <td><?=$criteria[14]->descriptions[1]?></td>
+                                                <td><?=$criteria[14]->descriptions[2]?></td>
+                                                <td><?=$criteria[14]->descriptions[3]?></td>
+                                                <td class='align-middle'><input type="text" name="Score[]" class = 'form-control'></td>
+                                            </tr>
+                                            <tr><th colspan="6" class = 'text-center'><button type="submit" class = 'btn btn-block btn-success'>Submit Grades</button></th></tr>
+                                        </form>
+                                        
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
                         </div>

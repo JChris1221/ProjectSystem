@@ -5,6 +5,8 @@ require_once("Student.php");
 require_once("Group.php");
 require_once("Criterion.php");
 
+
+
 class DBHandler
 {
 	static private $server = "localhost";
@@ -933,6 +935,30 @@ class DBHandler
 
 		$stmt->close();
 		$connection->close();
+	}
+	public static function AddGrades($id, $groupId, $scores){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("INSERT INTO Grades (Criteria_Id, Group_Id, Panelist_Id, Grade) VALUES (?,?,?,?)");
+		if(!$stmt){
+			die("Error: ". $connection->error);
+		}
+
+		$scoreslength = count($scores);
+		echo $scoreslength;
+		for($x = 0; $x<$scoreslength; $x++){
+			$criteriaId = $x+1;
+
+			$stmt->bind_param('dddd', $criteriaId, $groupId, $id, $scores[$x]);
+			$stmt->execute();
+		}
+
+		$stmt->close();
+		$connection->close();	
+		return true;
 	}
 }
 

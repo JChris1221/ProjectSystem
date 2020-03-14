@@ -108,7 +108,8 @@ if($_SESSION["Account"]->roleid !== 2){
                                                     <?php
                                                     }
                                                 }
-                                            ?>
+                                                ?>
+
                                         </tbody>
                                     </table>
                                 </div>

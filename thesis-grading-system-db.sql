@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2020 at 08:00 AM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.2.0
+-- Generation Time: Mar 14, 2020 at 02:30 PM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -146,11 +146,32 @@ INSERT INTO `faculty_types` (`Id`, `Name`) VALUES
 --
 
 CREATE TABLE `grades` (
-  `Grade` int(11) NOT NULL,
   `Criteria_Id` int(11) NOT NULL,
   `Group_Id` int(11) NOT NULL,
-  `Panelist_Id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `Panelist_Id` int(11) NOT NULL,
+  `Grade` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `grades`
+--
+
+INSERT INTO `grades` (`Criteria_Id`, `Group_Id`, `Panelist_Id`, `Grade`) VALUES
+(1, 19, 5, 1),
+(2, 19, 5, 2),
+(3, 19, 5, 3),
+(4, 19, 5, 4),
+(5, 19, 5, 5),
+(6, 19, 5, 6),
+(7, 19, 5, 7),
+(8, 19, 5, 8),
+(9, 19, 5, 9),
+(10, 19, 5, 10),
+(11, 19, 5, 11),
+(12, 19, 5, 12),
+(13, 19, 5, 13),
+(14, 19, 5, 14),
+(15, 19, 5, 15);
 
 -- --------------------------------------------------------
 
@@ -257,9 +278,9 @@ ALTER TABLE `faculty_types`
 -- Indexes for table `grades`
 --
 ALTER TABLE `grades`
-  ADD PRIMARY KEY (`Panelist_Id`,`Group_Id`),
-  ADD KEY `fk_groups_id` (`Group_Id`),
-  ADD KEY `grades_ibfk_3` (`Criteria_Id`);
+  ADD PRIMARY KEY (`Criteria_Id`,`Group_Id`,`Panelist_Id`),
+  ADD KEY `Group_Id` (`Group_Id`),
+  ADD KEY `Panelist_Id` (`Panelist_Id`);
 
 --
 -- Indexes for table `groups`
@@ -324,9 +345,9 @@ ALTER TABLE `faculty_assignment`
 -- Constraints for table `grades`
 --
 ALTER TABLE `grades`
-  ADD CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`Group_Id`) REFERENCES `groups` (`Id`),
-  ADD CONSTRAINT `grades_ibfk_2` FOREIGN KEY (`Panelist_Id`) REFERENCES `accounts` (`Id`),
-  ADD CONSTRAINT `grades_ibfk_3` FOREIGN KEY (`Criteria_Id`) REFERENCES `criteria` (`Id`);
+  ADD CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`Criteria_Id`) REFERENCES `criteria` (`Id`),
+  ADD CONSTRAINT `grades_ibfk_2` FOREIGN KEY (`Group_Id`) REFERENCES `groups` (`Id`),
+  ADD CONSTRAINT `grades_ibfk_3` FOREIGN KEY (`Panelist_Id`) REFERENCES `accounts` (`Id`);
 
 --
 -- Constraints for table `students`

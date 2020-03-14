@@ -6,9 +6,9 @@ $id = $_POST['id'];
 
 if(!in_array("", $_POST['Score']) || isset($_POST['Group_Id']) || isset($_POST['id'])){
 	$scores = $_POST['Score'];
-	
+
 	if(DBHandler::AddGrades($id,$groupid, $scores)){
-		header("Location: ../GroupEvaluation/GroupEvaluation.php");
+		header("Location: ../../GroupEvaluation/GroupEvaluation.php");
 	}
 	else{
 		die("Error Adding Grades");

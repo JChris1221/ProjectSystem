@@ -497,6 +497,7 @@ class DBHandler
 		$connection->close();	
 	}
 
+	//Return the groups of a faculty member with a specific faculty type
 	public function GetGroupsOfFaculty($id, $faculty_type){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 

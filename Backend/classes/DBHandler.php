@@ -3,6 +3,7 @@ require_once("Role.php");
 require_once("Account.php");
 require_once("Student.php");
 require_once("Group.php");
+require_once("Criterion.php");
 
 class DBHandler
 {
@@ -891,6 +892,47 @@ class DBHandler
 		$stmt->execute();
 
 		return true;
+	}
+	//-----------------------------------GRADES-------------------------------------------
+	public static function GetCriteria(){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT *  FROM Criteria");
+		if ( false===$stmt ) {
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$rc = $stmt->execute();
+		if ( false===$rc ) {
+		  die('execute() failed: ' . htmlspecialchars($stmt->error));
+		}
+
+		$res = $stmt->get_result();
+
+		if($res->num_rows > 0){
+			$criteria = array();
+			while($row = $res->fetch_assoc()){
+				$id = $row['Id'];
+				$title = $row['Title'];
+				$descs = array();
+				array_push($descs, $row['Beginner']);
+				array_push($descs, $row['Acceptable']);
+				array_push($descs, $row['Proficient']);
+				array_push($descs, $row['Exemplary']);
+
+				array_push($criteria, Criterion::Create($id, $title, $descs));
+			}
+			return $criteria;
+		}
+		else{
+			return NULL;
+		}
+
+		$stmt->close();
+		$connection->close();
 	}
 }
 

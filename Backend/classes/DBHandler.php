@@ -4,7 +4,7 @@ require_once("Account.php");
 require_once("Student.php");
 require_once("Group.php");
 require_once("Criterion.php");
-
+require_once("Evaluation.php");
 
 
 class DBHandler
@@ -863,6 +863,18 @@ class DBHandler
 		$mem_stmt->execute();
 		$mem_stmt->close();
 
+		//Delete Grades
+		$grd_stmt = $connection->prepare("DELETE FROM Grades WHERE Group_Id = ?");
+		$grd_stmt->bind_param('d', $groupid);
+		$grd_stmt->execute();
+		$grd_stmt->close();
+
+		//Delete Comments
+		$cmt_stmt = $connection->prepare("DELETE FROM Comments WHERE Group_Id = ?");
+		$cmt_stmt->bind_param('d', $groupid);
+		$cmt_stmt->execute();
+		$cmt_stmt->close();
+
 		//Delete Panels, Adviser & Professor
 		$fac_stmt = $connection->prepare("DELETE FROM Faculty_Assignment WHERE Group_Id = ?");
 		$fac_stmt->bind_param('d', $groupid);
@@ -1008,6 +1020,57 @@ class DBHandler
 		$connection->close();
 		return $evaluated;
 		
+	}
+
+	public static function GetEvaluation($panelid, $groupid){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT Grade FROM Grades WHERE Group_Id = ? AND Panelist_Id = ?");
+		if(!$stmt){
+			die("Error: ". $connection->error);
+		}
+
+		$stmt->bind_param("dd", $groupid, $panelid);
+		$stmt->execute();
+
+		$result = $stmt->get_result();
+		if($result->num_rows > 0){
+			$grades = array();
+			while($row = $result->fetch_assoc()){
+				array_push($grades, $row["Grade"]);
+			}
+		}else{
+			$stmt->close();
+			$connection->close();
+			return NULL;
+		}
+
+		$cmt_stmt = $connection->prepare("SELECT Comment FROM Comments WHERE Group_Id = ? AND Panelist_Id = ?");
+
+		if(!$cmt_stmt){
+			die("Error: ". $connection->error);
+		}
+
+		$cmt_stmt->bind_param("dd", $groupid, $panelid);
+		$cmt_stmt->execute();
+
+		$result = $cmt_stmt->get_result();
+
+		if($result->num_rows > 0){
+			$row = $result->fetch_assoc();
+			$comment = $row["Comment"];
+		}else{
+			$comment = "";
+		}
+
+		$evaluation = new Evaluation($grades, $comment);
+
+		$stmt->close();
+		$connection->close();
+		return $evaluation;
 	}
 }
 

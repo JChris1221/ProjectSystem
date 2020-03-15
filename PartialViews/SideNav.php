@@ -40,10 +40,6 @@ require_once ("CreateRelativeLink.php");
                         Advised Groups
                         
                     </a>
-                     <a class="nav-link" href=<?=RelativeLink("AdviserMonitor/ManageAccounts.php")?>>
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-reader"></i></div>
-                        Thesis Students
-                    </a>
                 <?php } ?>
                 <!-- /Faculty -->
             </div>

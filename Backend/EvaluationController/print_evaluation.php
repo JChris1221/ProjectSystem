@@ -8,17 +8,17 @@ require_once("../classes/Evaluation.php");
 
 
 
-if(false){
+if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 	header("Location: ../404.php");
 
 }else{
-	$panelid = $_POST["panelid"];
-	//$group = DBHandler::GetGroup($_POST['groupid']);
+	$panelid = $_GET['panelid'];
+	$group = DBHandler::GetGroup($_GET['groupid']);
 	// //$scores = $_POST['Scores'];
 	// //$comment = $_POST['Comment'];
 	// $adviser = DBHandler::GetGroupFaculty($group->id, 1);
 	$criteria = DBHandler::GetCriteria();
-	//$eval = DBHandler::GetEvaluation($panelid, $group->id);
+	$eval = DBHandler::GetEvaluation($panelid, $group->id);
 
 	$pdf = new TCPDF();
 
@@ -62,7 +62,7 @@ if(false){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">100</th>
+				<th class ="text-center">'.$eval->grades[$x].'</th>
 
 		</tr>';
 	}
@@ -76,7 +76,7 @@ if(false){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">100</th>
+				<th class ="text-center">'.$eval->grades[$x].'</th>
 
 		</tr>';
 	}
@@ -88,6 +88,8 @@ if(false){
 
 	//----------------------------------PAGE 2-----------------------------
 	$pdf->AddPage();
+	$font_size = $pdf->pixelsToUnits('26');
+	$pdf->SetFont ('helvetica', '', $font_size , '', 'default', true );
 
 	$html = '
 	<style>
@@ -120,10 +122,37 @@ if(false){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">100</th>
+				<th class ="text-center">'.$eval->grades[$x].'</th>
 
 		</tr>';
 	}
+
+	for($x = 10; $x<14; $x++){
+		$html.='<tr>';
+		
+		if($x == 10){
+			$html.='<th class = "text-center" rowspan = "4" valign="bottom">Layout</th>';
+		}
+
+
+		$html.=	'<th>&#8226; '.$criteria[$x]->descriptions[0].'</th>
+				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
+				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
+				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
+				<th class ="text-center">'.$eval->grades[$x].'</th>
+
+		</tr>';
+	}
+
+	$html.='<tr>
+				<th class = "text-center">'.$criteria[14]->title.'</th>
+				<th>&#8226; '.$criteria[14]->descriptions[0].'</th>
+				<th>&#8226; '.$criteria[14]->descriptions[1].'</th>
+				<th>&#8226; '.$criteria[14]->descriptions[2].'</th>
+				<th>&#8226; '.$criteria[14]->descriptions[3].'</th>
+				<th class ="text-center">'.$eval->grades[14].'</th>
+
+		</tr>';
 
 	$html .= '</table>';
 	$pdf->WriteHTMLCell(200, 0, '', '', $html, 0,1);

@@ -74,7 +74,7 @@ $criteria = DBHandler::GetCriteria();
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           <form action="../Backend/EvaluationController/add_grades_to_db.php" method="POST">
+                                           <form id ="EvaluationForm" action="../Backend/EvaluationController/add_grades_to_db.php" method="POST">
                                             <input type ="hidden" value = "<?=$_GET['id']?>" name="groupid">
                                             <input type ="hidden" value = "<?=$_SESSION['Account']->id?>" name="id">
                                             <!--DOCUMENTS-->
@@ -152,7 +152,7 @@ $criteria = DBHandler::GetCriteria();
                                                 </th>
                                             </tr>
 
-                                            <tr><th colspan="6" class = 'text-center'><button type="submit" class = 'btn btn-block btn-info'>Submit Evaluation</button></th></tr>
+                                            <tr><th colspan="6" class = 'text-center'><button type="button" id="SubmitForm" class = 'btn btn-block btn-info'>Submit Evaluation</button></th></tr>
                                         </form>
                                         
                                         </tbody>
@@ -172,5 +172,6 @@ $criteria = DBHandler::GetCriteria();
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="../js/datatables-demo.js"></script>
+        <script src="../js/EvaluateGroup.js"></script>
     </body>
 </html>

@@ -976,6 +976,39 @@ class DBHandler
 		$connection->close();	
 		return true;
 	}
+
+	//Checks if the panelist already evaluated the group
+	public static function IsEvaluated($id, $groupid){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT COUNT(*) as Total FROM Grades WHERE Group_Id = ? AND Panelist_Id = ?");
+		if(!$stmt){
+			die("Error: ". $connection->error);
+		}
+
+		$stmt->bind_param("dd", $groupid, $id);
+		$stmt->execute();
+
+		$result = $stmt->get_result();
+
+		$evaluated = false;
+		if($result->num_rows > 0){
+			$row = $result->fetch_assoc();
+
+			if($row["Total"] > 0)
+				$evaluated = true;
+		}
+		else
+			die("Count Failed");
+
+		$stmt->close();
+		$connection->close();
+		return $evaluated;
+		
+	}
 }
 
 ?>

@@ -72,8 +72,10 @@ if($_SESSION["Account"]->roleid !== 2){
                                             <?php
                                                 $panelChairGroups = DBHandler::GetGroupsOfFaculty($_SESSION['Account']->id, 2);
                                                 $panelGroups = DBHandler::GetGroupsOfFaculty($_SESSION['Account']->id, 3);
+
                                                 if($panelChairGroups !== NULL){
                                                     foreach($panelChairGroups as $g){
+                                                        $evaluated = (DBHandler::IsEvaluated($_SESSION['Account']->id, $g->id))?"disabled":"";
                                                         $adviser = DBHandler::GetGroupFaculty($g->id, 1);
                                                         $professor = DBHandler::GetGroupFaculty($g->id, 4);
                                                     ?>
@@ -84,7 +86,7 @@ if($_SESSION["Account"]->roleid !== 2){
                                                             <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
                                                             <td>Panel Chair</td>
                                                             <td>
-                                                                <a class = "btn btn-block btn-info" href="EvaluateGroup.php?id=<?=$g->id?>">Evaluate Group</a>
+                                                                <a class = "btn btn-block btn-info <?=$evaluated?>" href="EvaluateGroup.php?id=<?=$g->id?>" >Evaluate Group</a>
                                                             </td>
                                                         </tr>
                                                     <?php
@@ -92,6 +94,7 @@ if($_SESSION["Account"]->roleid !== 2){
                                                 }
                                                 if($panelGroups !== NULL){
                                                     foreach($panelGroups as $g){
+                                                        $evaluated = (DBHandler::IsEvaluated($_SESSION['Account']->id, $g->id))?"disabled":"";
                                                         $adviser = DBHandler::GetGroupFaculty($g->id, 1);
                                                         $professor = DBHandler::GetGroupFaculty($g->id, 4);
                                                     ?>
@@ -102,7 +105,7 @@ if($_SESSION["Account"]->roleid !== 2){
                                                             <td><?=$adviser[0]->lastname.", ".$adviser[0]->firstname?></td>
                                                             <td>Panelist</td>
                                                             <td>
-                                                                <a class = "btn btn-block btn-info" href="EvaluateGroup.php?id=<?=$g->id?>">Evaluate Group</a>
+                                                                <a class = "btn btn-block btn-info <?=$evaluated?>" href="EvaluateGroup.php?id=<?=$g->id?>" >Evaluate Group</a>
                                                             </td>
                                                         </tr>
                                                     <?php
@@ -126,5 +129,6 @@ if($_SESSION["Account"]->roleid !== 2){
         <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
         <script src="../js/datatables-demo.js"></script>
+        
     </body>
 </html>

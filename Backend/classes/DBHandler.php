@@ -936,7 +936,7 @@ class DBHandler
 		$stmt->close();
 		$connection->close();
 	}
-	public static function AddGrades($id, $groupId, $scores){
+	public static function AddGrades($id, $groupId, $scores,$comment){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
 
 		if($connection->connect_error)
@@ -954,9 +954,25 @@ class DBHandler
 
 			$stmt->bind_param('dddd', $criteriaId, $groupId, $id, $scores[$x]);
 			$stmt->execute();
+			
+		}
+		$stmt->close();
+
+		if($comment !== NULL && !empty($comment)){
+			$cmt_stmt = $connection->prepare("INSERT INTO Comments (Panelist_Id, Group_Id, Comment) VALUES (?,?,?)");
+			if(!$cmt_stmt)
+				die("Error: ".$connection->error);
+
+			if(!$cmt_stmt->bind_param("dds", $id, $groupId, $comment))
+				die("Error binding Params: ". $cmt_stmt->error);
+
+			if(!$cmt_stmt->execute())
+				die("Error Execute".$cmt_stmt->error);
+
+			$cmt_stmt->close();
 		}
 
-		$stmt->close();
+		
 		$connection->close();	
 		return true;
 	}

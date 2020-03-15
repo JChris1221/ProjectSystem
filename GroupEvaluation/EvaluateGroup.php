@@ -15,6 +15,7 @@ if($_SESSION["Account"]->roleid !== 2){
 
 $groupid = $_GET['id'];
 $group = DBHandler::GetGroup($groupid);
+$students = DBHandler::GetGroupMembers($groupid);
 $criteria = DBHandler::GetCriteria();
 ?>
 <html>
@@ -37,7 +38,7 @@ $criteria = DBHandler::GetCriteria();
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Evaluate Groups</h1>
+                        <h1 class="mt-4"><i class="fas fa-chart-bar"></i> Evaluate Group</h1>
                         <!-- <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Tables</li>
@@ -46,7 +47,18 @@ $criteria = DBHandler::GetCriteria();
                             <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
                         </div> -->
                         <div class="card mb-4">
-                            <div class="card-header bg-info"><i class="fas fa-chart-bar"></i> Group Evaluation <br><strong>(<?=$group->title?>)</strong></div>
+                            <div class="card-header bg-info">
+                               <div class = "container">
+                                   <div class = "row">
+                                       <div class = "col-sm text-center lead font-weight-bold"><?=$group->title?></div>
+                                   </div>
+                                   <div class = "row">
+                                       <?php foreach($students as $member){ ?>
+                                            <div class = "col-sm"><?=$member->firstname." ".$member->lastname?></div>
+                                        <?php } ?>
+                                   </div>
+                               </div>
+                            </div>
                             <div class="card-body">
                                 
                                 <div class="table-responsive">
@@ -132,7 +144,15 @@ $criteria = DBHandler::GetCriteria();
                                                 <td><?=$criteria[14]->descriptions[3]?></td>
                                                 <td class='align-middle'><input type="text" name="Score[]" class = 'form-control'></td>
                                             </tr>
-                                            <tr><th colspan="6" class = 'text-center'><button type="submit" class = 'btn btn-block btn-success'>Submit Grades</button></th></tr>
+                                            <tr><th colspan="6" class ='table-primary text-center'>Other Comments/Observation</th></tr>
+                                            <tr>
+                                                <th colspan="6">
+                                                    <!-- <input type="text" name="Comment" class ="form-control" placeholder="Add Comment/Observation (Optional)"> -->
+                                                    <textarea name="Comment" class ="form-control" placeholder="Add Comment/Observation (Optional)"></textarea>
+                                                </th>
+                                            </tr>
+
+                                            <tr><th colspan="6" class = 'text-center'><button type="submit" class = 'btn btn-block btn-info'>Submit Evaluation</button></th></tr>
                                         </form>
                                         
                                         </tbody>

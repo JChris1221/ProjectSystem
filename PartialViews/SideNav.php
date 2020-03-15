@@ -35,10 +35,9 @@ require_once ("CreateRelativeLink.php");
                         Evaluate Groups
                         
                     </a>
-                    <a class="nav-link" href=<?=RelativeLink("AdviserMonitor/ManageAccounts.php")?>>
+                    <a class="nav-link" href=<?=RelativeLink("GroupSummary/FacultySummary.php")?>>
                         <div class="sb-nav-link-icon"><i class="fas fa-hands-helping"></i></div>
-                        Advised Groups
-                        
+                        View Groups Summary
                     </a>
                 <?php } ?>
                 <!-- /Faculty -->

@@ -20,6 +20,7 @@ $group = DBHandler::GetGroup($groupid);
 $students = DBHandler::GetGroupMembers($groupid);
 $criteria = DBHandler::GetCriteria();
 $eval = DBHandler::GetEvaluation($panelid, $groupid);
+$panel = DBHandler::GetAccountInfo($panelid);
 ?>
 <html>
     <head>
@@ -41,7 +42,7 @@ $eval = DBHandler::GetEvaluation($panelid, $groupid);
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4"><i class="fas fa-chart-bar"></i> Evaluate Group</h1>
+                        <h1 class="mt-4"><i class="fas fa-chart-bar"></i> Group Evaluation (<?=$panel->firstname." ".$panel->lastname?>)</h1>
                         <!-- <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Tables</li>
@@ -168,9 +169,20 @@ $eval = DBHandler::GetEvaluation($panelid, $groupid);
                                                     <textarea name="Comment" class ="form-control" disabled><?=$comment?></textarea>
                                                 </th>
                                             </tr>
+                                             <tr>
+                                                <?php
+                                                $totalScore = array_sum($eval->grades);
+                                                $rating = (($totalScore/60) * 50) + 50;
+
+                                                echo "<th colspan='2'>Total Score: ".$totalScore."</th>";
+                                                echo "<th colspan = '2'>Rating: ".$rating."</th>";
+                                                ?>
+                                            </tr>
 
                                             <tr><th colspan="6" class = 'text-center'>
                                                 <a class = 'btn btn-block btn-danger' href="../Backend/EvaluationController/print_evaluation.php?groupid=<?=$_GET['groupid']?>&panelid=<?=$_GET['panelid']?>"><i class="fas fa-print"></i> Print Evaluation</a></th></tr>
+                                            <tr>
+                                           
                                         </form>
                                         
                                         </tbody>

@@ -3,9 +3,6 @@ require_once("../Backend/classes/Account.php");
 require_once("../Backend/classes/DBHandler.php");
 require_once("../Backend/classes/Role.php");
 
-
-header("Location: ../404.php");
-
 session_start();
 if(!isset($_SESSION["Account"])){
     header("Location: ../login.php");
@@ -15,6 +12,11 @@ if(!isset($_GET["id"])){
 }
 
 $current_account = DBHandler::GetAccountInfo($_GET['id']);
+
+if(!$current_account->disabled){
+    header("Location: ../404.php");
+}
+
 if($current_account === NULL){
     header("Location: ../404.php");
 }
@@ -53,14 +55,14 @@ if($_SESSION["Account"]->roleid !== 1){
                        <!--  <div class="card mb-4">
                             <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
                         </div> -->
-                        <div class="card my-4 mx-5 shadow border-danger">
-                            <div class="card-header bg-danger">
-                                <i class="fas fa-user-minus"></i> Delete this account? (This action can't be undone)
+                        <div class="card my-4 mx-5 shadow border-warning">
+                            <div class="card-header bg-warning">
+                                <i class="fas fa-user-minus"></i> Enable this account?
                             </div>
                             <div class="card-body">
                                 
                                 <div>
-                                    <form action ="../Backend/AccountController/delete_account_from_db.php" method="POST">
+                                    <form action ="../Backend/AccountController/enable_account_from_db.php" method="POST">
                                         <input type = "hidden" name = 'Id' value = <?=$_GET['id']?>>
                                         <div class="form-row">
                                             <div class="col-md-6">
@@ -85,8 +87,8 @@ if($_SESSION["Account"]->roleid !== 1){
                                             <input class = 'form-control' type="text" disabled value = "<?= $current_account->rolename ?>" disabled>
                                         </div>
                                         <div class="form-group mt-4 mb-0">
-                                            <button class="btn btn-warning" type = "submit">Delete Account</button>
-                                            <a class="btn btn-danger" role="button" href="ModifyAccounts.php">Cancel</a>
+                                            <button class="btn btn-warning" type = "submit">Enable Account</button>
+                                            <a class="btn btn-danger" role="button" href="ManageAccounts.php">Cancel</a>
                                         </div>
                                     </form>
                                 </div>

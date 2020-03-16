@@ -54,7 +54,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 <th>Username</th>
                                                 <th>Role</th>
                                                 <th>Edit</th>
-                                                <th>Delete</th>
+                                                <th>Enable/Disable</th>
                                                 <th>Reset Password</th>
                                             </tr>
                                         </thead>
@@ -65,7 +65,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                 <th>Username</th>
                                                 <th>Role</th>
                                                 <th>Edit</th>
-                                                <th>Delete</th>
+                                                <th>Enable/Disable</th>
                                                 <th>Reset Password</th>
                                             </tr>
                                         </tfoot>
@@ -84,7 +84,12 @@ if($_SESSION["Account"]->roleid !== 1){
                                                             <td>
                                                                 <a class = 'btn btn-info btn-block' href = "EditAccount.php?id=<?=$a->id?>">Edit</a>
                                                             </td>
-                                                            <td><a class = 'btn btn-danger btn-block' href = "DeleteAccount.php?id=<?=$a->id?>">Delete</a></td>
+                                                            <?php if($a->disabled){?>
+                                                                <td><a class = 'btn btn-warning btn-block' href = "EnableAccount.php?id=<?=$a->id?>">Enable</a></td>
+                                                            <?php }else{ ?>
+                                                                 <td><a class = 'btn btn-danger btn-block' href = "DisableAccount.php?id=<?=$a->id?>">Disable</a></td>
+                                                            <?php } ?>
+
                                                             <td><a class = 'btn btn-warning btn-block disabled' href = "#">Reset Password</a></td>
                                                         </form></tr>
                                                     <?php

@@ -57,7 +57,7 @@ class DBHandler
 
 		if($res->num_rows > 0){
 			$row = $res->fetch_assoc();
-			$acc = Account::CreateAccountWithRoleName($row['Id'], $row['Firstname'], $row['Lastname'], $row['Username'], $row['Role_Id'], $row['Role_Name']);
+			$acc = Account::CreateAccountWithRoleName($row['Id'], $row['Firstname'], $row['Lastname'], $row['Username'], $row['Role_Id'], $row['Role_Name'], $row['Disabled']);
 			return $acc;
 			
 		}
@@ -97,7 +97,7 @@ class DBHandler
 
 		if($res->num_rows > 0){
 			$row = $res->fetch_assoc();
-			$acc = Account::CreateAccountWithRoleName($row['Id'], $row['Firstname'], $row['Lastname'], $row['Username'], $row['Role_Id'], $row['Role_Name']);
+			$acc = Account::CreateAccountWithRoleName($row['Id'], $row['Firstname'], $row['Lastname'], $row['Username'], $row['Role_Id'], $row['Role_Name'], $row['Disabled']);
 			return $acc;
 			
 		}
@@ -183,8 +183,9 @@ class DBHandler
 				$username = $row['Username'];
 				$roleId = $row['Role_Id'];
 				$roleName = $row['Role_Name'];
+				$disabled = $row['Disabled'];
 
-				array_push($accounts, Account::CreateAccountWithRoleName($id, $firstname, $lastname, $username, $roleId, $roleName));
+				array_push($accounts, Account::CreateAccountWithRoleName($id, $firstname, $lastname, $username, $roleId, $roleName,$disabled));
 			}
 			return $accounts;
 		}
@@ -218,9 +219,9 @@ class DBHandler
 				$username = $row['Username'];
 				$lastname = $row['Lastname'];
 				$roleId = $row['Role_Id'];
+				$disabled = $row['Disabled'];
 
-
-				array_push($accounts, Account::CreateAccountWithInfo($id, $firstname, $lastname, $username, $roleId));
+				array_push($accounts, Account::CreateAccountWithInfo($id, $firstname, $lastname, $username, $roleId, $disabled));
 			}
 			return $accounts;
 		}
@@ -381,6 +382,73 @@ class DBHandler
 		$connection->close();	
 
 		return true;
+	}
+
+	public function ToggleAccount($id, $toggle){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("UPDATE accounts SET Disabled = ? WHERE Id=?");
+		
+
+		if ( false===$stmt ) {
+		
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+		}
+
+		$rc = $stmt->bind_param('dd', $toggle, $id);
+		
+		if ( false===$rc ) {
+		  die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+		}
+
+		$rc = $stmt->execute();
+		
+		if ( false===$rc ){
+		  die('execute() failed: ' . htmlspecialchars($stmt->error));
+		}
+
+		if($stmt->affected_rows == 0){
+			$stmt->close();
+			$connection->close();	
+			return false;
+		}
+
+		$stmt->close();
+		$connection->close();	
+
+		return true;
+	}
+
+	public function ResetPassword($id){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT Username FROM Accounts WHERE Id=?");
+		
+
+		if ( false===$stmt ) 
+		  die('prepare() failed: ' . htmlspecialchars($connection->error));
+
+		if(!$stmt->bind_param('d', $id))
+		  die('bind_param() failed: ' . htmlspecialchars($stmt->error));
+
+		if(!$stmt->execute())
+		  die('execute() failed: ' . htmlspecialchars($stmt->error));
+
+		if($stmt->affected_rows == 0){
+			$stmt->close();
+			$connection->close();	
+			return false;
+		}
+		
+
+		$stmt->close();
+		$connection->close();
 	}
 
 	//-----------------------------------GROUPS-------------------------------------
@@ -591,8 +659,9 @@ class DBHandler
 				$lastname = $row['Lastname'];
 				$username = $row['Username'];
 				$roleId = $row['Role_Id'];
+				$disabled = $row['Disabled'];
 
-				array_push($faculty, Account::CreateAccountWithInfo($id, $firstname, $lastname, $username, $roleId));
+				array_push($faculty, Account::CreateAccountWithInfo($id, $firstname, $lastname, $username, $roleId,$disabled));
 			}
 			return $faculty;
 		}

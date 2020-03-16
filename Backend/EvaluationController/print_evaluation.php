@@ -12,13 +12,13 @@ if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 	header("Location: ../404.php");
 
 }else{
-	$panelid = $_GET['panelid'];
+	$panel = DBHandler::GetAccountInfo($_GET['panelid']);
 	$group = DBHandler::GetGroup($_GET['groupid']);
-	// //$scores = $_POST['Scores'];
-	// //$comment = $_POST['Comment'];
-	// $adviser = DBHandler::GetGroupFaculty($group->id, 1);
+	$members = DBHandler::GetGroupMembers($group->id);
+	$adviser = DBHandler::GetGroupFaculty($group->id, 1);
+	$prof = DBHandler::GetGroupFaculty($group->id, 4);
 	$criteria = DBHandler::GetCriteria();
-	$eval = DBHandler::GetEvaluation($panelid, $group->id);
+	$eval = DBHandler::GetEvaluation($panel->id, $group->id);
 
 	$pdf = new TCPDF();
 
@@ -88,6 +88,7 @@ if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 
 	//----------------------------------PAGE 2-----------------------------
 	$pdf->AddPage();
+	$pdf->SetAutoPageBreak(False, 3);
 	$font_size = $pdf->pixelsToUnits('26');
 	$pdf->SetFont ('helvetica', '', $font_size , '', 'default', true );
 
@@ -154,8 +155,54 @@ if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 
 		</tr>';
 
+	$totalScore = array_sum($eval->grades);
+	$rating = (($totalScore/60) * 50) + 50;
+	$html .= '
+	<tr>
+		<td colspan = "3" rowspan = "4">
+			Group Members: <br>';
+
+	foreach($members as $m){
+		$html.=$m->firstname.' '.$m->lastname.'<br>';
+	}
+
+
+	$html.= '
+		</td>
+		<td colspan = "3">Section: '.$group->section.'</td>
+	</tr>
+	<tr>
+		<td colspan = "3">Professor: '.$prof[0]->firstname.' '.$prof[0]->lastname.'</td>
+	</tr>
+	<tr>
+		<td colspan = "3">Adviser: '.$adviser[0]->firstname.' '.$adviser[0]->lastname.'</td>
+	</tr>
+	<tr>
+		<td colspan = "3">Title: '.$group->title.'</td>
+	</tr>
+
+	<tr>
+		<td colspan = "3" rowspan = "2">Other Comments/Observation: '.$eval->comment.'</td>
+		<td colspan = "2">Total Score: </td>
+		<td class = "text-center">'.$totalScore.'</td>
+	</tr>
+	<tr>
+		<td colspan = "2">Rating: </td>
+		<td class="text-center">'.number_format($rating, 2, '.',',').'</td>
+	</tr>
+
+	';
+
 	$html .= '</table>';
 	$pdf->WriteHTMLCell(200, 0, '', '', $html, 0,1);
+
+	$evaluator = "Evaluated by: ";
+	$currentDate = new DateTime($eval->date);
+	$date = "Date: ";
+	$pdf->Cell(70, 10, $evaluator,0,0,'L');
+	$pdf->Cell(30, 10, $date,0,1,'L');
+	$pdf->Cell(70, 5, $panel->firstname." ". $panel->lastname,0,0,'C');
+	$pdf->Cell(30, 5, date_format($currentDate, "F d, Y"),0,1,'C');
 
 
 	$pdf->Output("Evaluation.pdf", "I");

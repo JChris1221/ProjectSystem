@@ -170,7 +170,7 @@ $eval = DBHandler::GetEvaluation($panelid, $groupid);
                                             </tr>
 
                                             <tr><th colspan="6" class = 'text-center'>
-                                                <button class = 'btn btn-block btn-danger' type="submit"><i class="fas fa-print"></i> Print Evaluation</button></th></tr>
+                                                <a class = 'btn btn-block btn-danger' href="../Backend/EvaluationController/print_evaluation.php?groupid=<?=$_GET['groupid']?>&panelid=<?=$_GET['panelid']?>"><i class="fas fa-print"></i> Print Evaluation</a></th></tr>
                                         </form>
                                         
                                         </tbody>

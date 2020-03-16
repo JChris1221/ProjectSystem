@@ -954,7 +954,7 @@ class DBHandler
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$stmt = $connection->prepare("INSERT INTO Grades (Criteria_Id, Group_Id, Panelist_Id, Grade) VALUES (?,?,?,?)");
+		$stmt = $connection->prepare("INSERT INTO Grades (Criteria_Id, Group_Id, Panelist_Id, Grade, DateGiven) VALUES (?,?,?,?, CURDATE())");
 		if(!$stmt){
 			die("Error: ". $connection->error);
 		}
@@ -1028,7 +1028,7 @@ class DBHandler
 		if($connection->connect_error)
 			die($connection->connect_error);
 
-		$stmt = $connection->prepare("SELECT Grade FROM Grades WHERE Group_Id = ? AND Panelist_Id = ?");
+		$stmt = $connection->prepare("SELECT Grade, DateGiven FROM Grades WHERE Group_Id = ? AND Panelist_Id = ?");
 		if(!$stmt){
 			die("Error: ". $connection->error);
 		}
@@ -1041,6 +1041,7 @@ class DBHandler
 			$grades = array();
 			while($row = $result->fetch_assoc()){
 				array_push($grades, $row["Grade"]);
+				$date = $row['DateGiven'];
 			}
 		}else{
 			$stmt->close();
@@ -1066,7 +1067,7 @@ class DBHandler
 			$comment = "";
 		}
 
-		$evaluation = new Evaluation($grades, $comment);
+		$evaluation = new Evaluation($grades, $comment, $date);
 
 		$stmt->close();
 		$connection->close();

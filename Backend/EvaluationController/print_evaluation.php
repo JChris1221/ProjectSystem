@@ -4,11 +4,13 @@ require_once("../classes/DBhandler.php");
 require_once("../classes/Group.php");
 require_once("../classes/Criterion.php");
 require_once("../classes/Evaluation.php");
+session_start();
+header("Content-type: application/pdf");
 
-
-
-
-if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
+if(!isset($_SESSION["Account"])){
+	header("Location: ../login.php");
+}
+else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 	header("Location: ../404.php");
 
 }else{
@@ -182,7 +184,7 @@ if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 	</tr>
 
 	<tr>
-		<td colspan = "3" rowspan = "2">Other Comments/Observation: '.$eval->comment.'</td>
+		<td colspan = "3" rowspan = "2">Other Comments/Observation:<br>'.$eval->comment.'</td>
 		<td colspan = "2">Total Score: </td>
 		<td class = "text-center">'.$totalScore.'</td>
 	</tr>

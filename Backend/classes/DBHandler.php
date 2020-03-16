@@ -905,6 +905,42 @@ class DBHandler
 
 		$stmt->execute();
 
+		$stmt->close();
+		$connection->close();
+
+		return true;
+	}
+
+	public static function UpdateGroupClass($groupid, $profid, $section){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		//Update Section
+		$stmt = $connection->prepare("UPDATE Groups SET Section = ? WHERE Id = ?");
+
+		if(!$stmt){
+			die($connection->error);
+		}
+		if(!$stmt->bind_param("sd", $section, $groupid))
+			die("error binding parameters");
+
+		if(!$stmt->execute()){
+			die($stmt->error);
+		}
+		
+		$stmt->close();	
+
+		$prof = 4; //Professor Id
+		$prof_stmt = $connection->prepare("UPDATE Faculty_Assignment SET Account_Id = ? WHERE Group_Id = ? AND Faculty_Type_Id = ?" );
+		if(!$prof_stmt->bind_param("ddd", $profid, $groupid, $prof))
+			die("error binding parameters");
+
+		$prof_stmt->execute();
+		$prof_stmt->close();
+		$connection->close();
+
 		return true;
 	}
 	//-----------------------------------GRADES-------------------------------------------

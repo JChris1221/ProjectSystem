@@ -64,8 +64,17 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                         <input type="hidden" name="id" value="<?=$_GET['id']?>">
                                         <div class="form-row mt-4 border-bottom">Panelist</div>
                                        	<div class="border-top border-bottom border-primary">
+                                             <?php 
+                                                $isEval = DBHandler::IsEvaluated($panelchair[0]->id, $_GET['id']);
+                                                $disable = ($isEval)?"disabled":""; 
+                                             ?>
                                        		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1 (Panel Chair):</label>
-                                        	 <select class = "form-control" name = "PanelChairId">
+                                             <?php if($isEval) {?>
+                                                    <span class='text-danger'>
+                                                        <i class="fas fa-info-circle" data-toggle="tooltip" title="This panelist has already evaluated the group"></i>
+                                                    </span>
+                                             <?php }?>
+                                        	 <select class = "form-control" name = "PanelChairId" <?=$disable?>>
                                         	 	<option disabled selected>Choose Panelist</option>
                                                 <?php
                                                     foreach($faculty as $p){
@@ -75,10 +84,21 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                                         <?php
                                                     }
                                                 ?>
-                                             </select></div>
+                                             </select>
+                                         </div>
+
+                                            <?php 
+                                                $isEval = DBHandler::IsEvaluated($panels[0]->id, $_GET['id']);
+                                                $disable = ($isEval)?"disabled":""; 
+                                            ?>
 
 	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 2:</label>
-	                                        <select class = "form-control" name = "PanelId[]">
+                                            <?php if($isEval) {?>
+                                                    <span class='text-danger'>
+                                                        <i class="fas fa-info-circle" data-toggle="tooltip" title="This panelist has already evaluated the group"></i>
+                                                    </span>
+                                            <?php }?>    
+	                                        <select class = "form-control" name = "PanelId[]" <?=$disable?>>
 	                                        	<option disabled selected>Choose Panelist</option>
                                                 <?php
 
@@ -89,10 +109,20 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                                         <?php
                                                     }
                                                 ?>
-	                                        </select></div>
+	                                        </select>
+                                        </div>
 
+                                            <?php 
+                                                $isEval = DBHandler::IsEvaluated($panels[1]->id, $_GET['id']);
+                                                $disable = ($isEval)?"disabled":""; 
+                                            ?>
 	                                        <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 3:</label>
-	                                        <select class = "form-control" name = "PanelId[]">
+                                            <?php if($isEval) {?>
+                                                    <span class='text-danger'>
+                                                        <i class="fas fa-info-circle" data-toggle="tooltip" title="This panelist has already evaluated the group"></i>
+                                                    </span>
+                                            <?php }?>
+	                                        <select class = "form-control" name = "PanelId[]" <?=$disable?>>
 	                                        	<option disabled selected >Choose Panelist</option>
                                                 <?php
                                                     foreach($faculty as $p){
@@ -102,7 +132,8 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                                         <?php
                                                     }
                                                 ?>
-	                                        </select></div>
+	                                        </select>
+                                            </div>
                                        	</div>
 
                                         <!--/PANELIST-->
@@ -124,6 +155,11 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="../js/scripts.js"></script>
         <script src="../js/AddGroup.js"></script>
+        <script>
+            $(document).ready(function(){
+              $('[data-toggle="tooltip"]').tooltip();   
+            });
+    </script>
     </body>
 </html>
 

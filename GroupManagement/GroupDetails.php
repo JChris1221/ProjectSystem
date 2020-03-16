@@ -83,6 +83,9 @@ $prof = DBHandler::GetGroupFaculty($_GET['id'], 4);
                                             <div class = 'col-md-3'>
                                                 <div class="form-group"><label class="small mb-1" for="inputSection">Section</label><input class="form-control py-4" id="inputSection" type="text" value = "<?=htmlspecialchars($group->section)?>"disabled/></div>
                                             </div>
+                                            <div class = 'col-md-3'>
+                                                <a class = 'btn btn-info' href="EditClassGroup.php?id=<?=$_GET['id']?>">Edit Professor & Section</a>
+                                            </div>
                                         </div>
                                         <!--/PROFESSOR & SECTION-->
 

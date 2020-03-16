@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2020 at 02:30 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
+-- Generation Time: Mar 16, 2020 at 08:47 AM
+-- Server version: 10.1.29-MariaDB
+-- PHP Version: 7.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,9 +44,30 @@ CREATE TABLE `accounts` (
 INSERT INTO `accounts` (`Id`, `Username`, `Password`, `Firstname`, `Lastname`, `Role_Id`) VALUES
 (2, 'Admin', '0192023a7bbd73250516f069df18b500', 'Dan', 'Felix', 1),
 (5, 'martha1221', '81dc9bdb52d04dc20036dbd8313ed055', 'Martha', 'House', 2),
-(6, 'chap32', 'e2fc714c4727ee9395f324cd2e7f331f', 'Spike', 'Chapman', 2),
-(7, 'patty', '912e79cd13c64069d91da65d62fbb78c', 'Patricia', 'Stone', 2),
-(8, 'kay', '4ea3144e35fd47aafa5bc4bd9190e4ab', 'Kaylen', 'Schroeder', 2);
+(6, 'chap32', '81dc9bdb52d04dc20036dbd8313ed055', 'Spike', 'Chapman', 2),
+(7, 'patty', '81dc9bdb52d04dc20036dbd8313ed055', 'Patricia', 'Stone', 2),
+(8, 'kay', '81dc9bdb52d04dc20036dbd8313ed055', 'Kaylen', 'Schroeder', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `Panelist_Id` int(11) NOT NULL,
+  `Group_Id` int(11) NOT NULL,
+  `Comment` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`Panelist_Id`, `Group_Id`, `Comment`) VALUES
+(5, 18, 'test comment from martha'),
+(8, 16, 'Some Random Comment'),
+(8, 18, 'Comment from kaylen schroeder (AI Can\'t ever turn robots to human blah blah)');
 
 -- --------------------------------------------------------
 
@@ -113,10 +134,10 @@ INSERT INTO `faculty_assignment` (`Group_Id`, `Account_Id`, `Faculty_Type_Id`) V
 (18, 8, 3),
 (18, 8, 4),
 (19, 5, 2),
-(19, 6, 1),
+(19, 6, 3),
 (19, 6, 4),
 (19, 7, 3),
-(19, 8, 3);
+(19, 8, 1);
 
 -- --------------------------------------------------------
 
@@ -149,29 +170,75 @@ CREATE TABLE `grades` (
   `Criteria_Id` int(11) NOT NULL,
   `Group_Id` int(11) NOT NULL,
   `Panelist_Id` int(11) NOT NULL,
-  `Grade` int(11) NOT NULL
+  `Grade` int(11) NOT NULL,
+  `DateGiven` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `grades`
 --
 
-INSERT INTO `grades` (`Criteria_Id`, `Group_Id`, `Panelist_Id`, `Grade`) VALUES
-(1, 19, 5, 1),
-(2, 19, 5, 2),
-(3, 19, 5, 3),
-(4, 19, 5, 4),
-(5, 19, 5, 5),
-(6, 19, 5, 6),
-(7, 19, 5, 7),
-(8, 19, 5, 8),
-(9, 19, 5, 9),
-(10, 19, 5, 10),
-(11, 19, 5, 11),
-(12, 19, 5, 12),
-(13, 19, 5, 13),
-(14, 19, 5, 14),
-(15, 19, 5, 15);
+INSERT INTO `grades` (`Criteria_Id`, `Group_Id`, `Panelist_Id`, `Grade`, `DateGiven`) VALUES
+(1, 16, 8, 3, '2020-03-16'),
+(1, 18, 5, 2, '2020-03-16'),
+(1, 18, 8, 1, '2020-03-16'),
+(1, 19, 5, 1, '2020-03-16'),
+(2, 16, 8, 1, '2020-03-16'),
+(2, 18, 5, 3, '2020-03-16'),
+(2, 18, 8, 2, '2020-03-16'),
+(2, 19, 5, 2, '2020-03-16'),
+(3, 16, 8, 4, '2020-03-16'),
+(3, 18, 5, 3, '2020-03-16'),
+(3, 18, 8, 4, '2020-03-16'),
+(3, 19, 5, 3, '2020-03-16'),
+(4, 16, 8, 2, '2020-03-16'),
+(4, 18, 5, 2, '2020-03-16'),
+(4, 18, 8, 2, '2020-03-16'),
+(4, 19, 5, 2, '2020-03-16'),
+(5, 16, 8, 3, '2020-03-16'),
+(5, 18, 5, 3, '2020-03-16'),
+(5, 18, 8, 1, '2020-03-16'),
+(5, 19, 5, 3, '2020-03-16'),
+(6, 16, 8, 4, '2020-03-16'),
+(6, 18, 5, 2, '2020-03-16'),
+(6, 18, 8, 5, '2020-03-16'),
+(6, 19, 5, 3, '2020-03-16'),
+(7, 16, 8, 2, '2020-03-16'),
+(7, 18, 5, 3, '2020-03-16'),
+(7, 18, 8, 1, '2020-03-16'),
+(7, 19, 5, 4, '2020-03-16'),
+(8, 16, 8, 3, '2020-03-16'),
+(8, 18, 5, 1, '2020-03-16'),
+(8, 18, 8, 4, '2020-03-16'),
+(8, 19, 5, 3, '2020-03-16'),
+(9, 16, 8, 1, '2020-03-16'),
+(9, 18, 5, 1, '2020-03-16'),
+(9, 18, 8, 4, '2020-03-16'),
+(9, 19, 5, 2, '2020-03-16'),
+(10, 16, 8, 3, '2020-03-16'),
+(10, 18, 5, 1, '2020-03-16'),
+(10, 18, 8, 4, '2020-03-16'),
+(10, 19, 5, 1, '2020-03-16'),
+(11, 16, 8, 2, '2020-03-16'),
+(11, 18, 5, 2, '2020-03-16'),
+(11, 18, 8, 3, '2020-03-16'),
+(11, 19, 5, 3, '2020-03-16'),
+(12, 16, 8, 3, '2020-03-16'),
+(12, 18, 5, 4, '2020-03-16'),
+(12, 18, 8, 1, '2020-03-16'),
+(12, 19, 5, 3, '2020-03-16'),
+(13, 16, 8, 4, '2020-03-16'),
+(13, 18, 5, 4, '2020-03-16'),
+(13, 18, 8, 3, '2020-03-16'),
+(13, 19, 5, 2, '2020-03-16'),
+(14, 16, 8, 3, '2020-03-16'),
+(14, 18, 5, 1, '2020-03-16'),
+(14, 18, 8, 4, '2020-03-16'),
+(14, 19, 5, 4, '2020-03-16'),
+(15, 16, 8, 3, '2020-03-16'),
+(15, 18, 5, 4, '2020-03-16'),
+(15, 18, 8, 1, '2020-03-16'),
+(15, 19, 5, 3, '2020-03-16');
 
 -- --------------------------------------------------------
 
@@ -255,6 +322,13 @@ ALTER TABLE `accounts`
   ADD KEY `RoleId` (`Role_Id`);
 
 --
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`Panelist_Id`,`Group_Id`),
+  ADD KEY `Group_Id` (`Group_Id`);
+
+--
 -- Indexes for table `criteria`
 --
 ALTER TABLE `criteria`
@@ -332,6 +406,13 @@ ALTER TABLE `students`
 --
 ALTER TABLE `accounts`
   ADD CONSTRAINT `accounts_ibfk_1` FOREIGN KEY (`Role_Id`) REFERENCES `roles` (`Id`);
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`Panelist_Id`) REFERENCES `accounts` (`Id`),
+  ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`Group_Id`) REFERENCES `groups` (`Id`);
 
 --
 -- Constraints for table `faculty_assignment`

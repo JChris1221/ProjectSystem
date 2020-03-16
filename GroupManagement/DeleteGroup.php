@@ -5,6 +5,7 @@ require_once("../Backend/classes/Group.php");
 require_once("../Backend/classes/Student.php");
 
 session_start();
+
 if(!isset($_SESSION["Account"])){
     header("Location: ../404.php");
 }

@@ -90,7 +90,7 @@ if($_SESSION["Account"]->roleid !== 1){
                                                                  <td><a class = 'btn btn-danger btn-block' href = "DisableAccount.php?id=<?=$a->id?>">Disable</a></td>
                                                             <?php } ?>
 
-                                                            <td><a class = 'btn btn-warning btn-block disabled' href = "#">Reset Password</a></td>
+                                                            <td><a class = 'btn btn-warning btn-block' href = "ResetPassword.php?id=<?=$a->id?>">Reset Password</a></td>
                                                         </form></tr>
                                                     <?php
                                                     }

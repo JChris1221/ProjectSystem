@@ -440,15 +440,23 @@ class DBHandler
 		if(!$stmt->execute())
 		  die('execute() failed: ' . htmlspecialchars($stmt->error));
 
-		if($stmt->affected_rows == 0){
-			$stmt->close();
-			$connection->close();	
-			return false;
-		}
+		$result = $stmt->get_result();
 		
 
-		$stmt->close();
+		if($result->num_rows > 0){
+			$row = $result->fetch_assoc();
+			$stmt->close();
+
+			$rst_stmt = $connection->prepare("UPDATE Accounts SET Password = ? WHERE Id = ?");
+			$rst_stmt->bind_param('sd', md5($row['Username']), $id);
+			$rst_stmt->execute();
+
+		}else{
+			die("Error obtaining account from db");
+		}
+
 		$connection->close();
+		return true;
 	}
 
 	//-----------------------------------GROUPS-------------------------------------

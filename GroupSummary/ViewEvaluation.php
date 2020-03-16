@@ -10,10 +10,6 @@ if(!isset($_SESSION["Account"])){
     header("Location: ../login.php");
 }
 
-if($_SESSION["Account"]->roleid !== 2){
-    header("Location: ../401.php");
-}
-
 $groupid = $_GET['groupid'];
 $panelid = $_GET['panelid'];
 $group = DBHandler::GetGroup($groupid);
@@ -43,13 +39,7 @@ $panel = DBHandler::GetAccountInfo($panelid);
                 <main>
                     <div class="container-fluid">
                         <h1 class="mt-4"><i class="fas fa-chart-bar"></i> Group Evaluation (<?=$panel->firstname." ".$panel->lastname?>)</h1>
-                        <!-- <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
-                        </ol> -->
-                       <!--  <div class="card mb-4">
-                            <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
-                        </div> -->
+
                         <div class="card mb-4">
                             <div class="card-header bg-info">
                                <div class = "container">
@@ -58,7 +48,7 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                    </div>
                                    <div class = "row">
                                        <?php foreach($students as $member){ ?>
-                                            <div class = "col-sm"><?=$member->firstname." ".$member->lastname?></div>
+                                            <div class = "col-sm text-center"><?=$member->firstname." ".$member->lastname?></div>
                                         <?php } ?>
                                    </div>
                                </div>
@@ -148,6 +138,8 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                 </tr>
                                             <?php } ?>
                                             <!--/LAYOUT-->
+
+                                            <!-- COMPLETE -->
                                             <tr>
                                                 <th class='align-middle text-center'>Complete</th>
                                                 <td><?=$criteria[14]->descriptions[0]?></td>
@@ -158,6 +150,8 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                     <input type="text" value="<?=$eval->grades[$x]?>" class = 'form-control text-center' name = "Score[]" disabled>
                                                 </td>
                                             </tr>
+                                            <!-- /COMPLETE -->
+                                            <!-- COMMENT -->
                                             <tr>
                                                 <th colspan="6" class ='table-primary text-center'>Other Comments/Observation</th>
                                             </tr>
@@ -169,16 +163,18 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                     <textarea name="Comment" class ="form-control" disabled><?=$comment?></textarea>
                                                 </th>
                                             </tr>
+                                            <!--/COMMENT-->
+
+                                            <!--TOTAL GRADE-->
                                              <tr>
                                                 <?php
                                                 $totalScore = array_sum($eval->grades);
-                                                $rating = (($totalScore/60) * 50) + 50;
+                                                $rating = (($totalScore/60) * 50) + 50; ?>
 
-                                                echo "<th colspan='2'>Total Score: ".$totalScore."</th>";
-                                                echo "<th colspan = '2'>Rating: ".$rating."</th>";
-                                                ?>
+                                                <th colspan='2'>Total Score: <?=$totalScore?></th>;
+                                                <th colspan = '2'>Rating: <?=number_format($rating,2,'.',',')?></th>;
                                             </tr>
-
+                                            <!-- /TOTAL GRADE -->
                                             <tr><th colspan="6" class = 'text-center'>
                                                 <a class = 'btn btn-block btn-danger' href="../Backend/EvaluationController/print_evaluation.php?groupid=<?=$_GET['groupid']?>&panelid=<?=$_GET['panelid']?>"><i class="fas fa-print"></i> Print Evaluation</a></th></tr>
                                             <tr>

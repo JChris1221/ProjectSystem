@@ -24,6 +24,11 @@ require_once ("CreateRelativeLink.php");
                         <div class="sb-nav-link-icon"><i class="fas fa-user-friends"></i></div>
                         Groups
                     </a>
+                    <div class="sb-sidenav-menu-heading">Reports</div>
+                    <a class="nav-link" href=<?=RelativeLink("GroupSummary/AdminSummary.php")?>>
+                        <div class="sb-nav-link-icon"><i class="fas fa-file-signature"></i></div>
+                        View Group Summary
+                    </a>
                 <?php } ?>
                 <!-- /Admin Only -->
 

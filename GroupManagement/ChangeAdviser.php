@@ -50,11 +50,11 @@ $faculty = DBHandler::GetAccountsWithRole(2);
                             <div class="card-header bg-info"><i class="fas fa-users"></i> Change Adviser (<?=$group->title?>)</div>
                             <div class="card-body">
                                 <?php
-                                    if(isset($_SESSION["AddUserError"])){ 
+                                    if(isset($_SESSION["UpdateAdviserError"])){ 
                                         ?>
-                                        <span class = "text-danger" ><?php echo $_SESSION["AddUserError"]; ?></span>
+                                        <span class = "text-danger" ><?php echo $_SESSION["UpdateAdviserError"]; ?></span>
                                         <?php
-                                        unset($_SESSION["AddUserError"]);
+                                        unset($_SESSION["UpdateAdviserError"]);
                                     }
                                 ?>
                                 <div>

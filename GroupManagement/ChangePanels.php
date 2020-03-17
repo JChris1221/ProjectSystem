@@ -54,6 +54,14 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                          <div class="card my-4 mx-5 shadow border-info">
                             <div class="card-header bg-info"><i class="fas fa-users"></i> Edit Panels (<?=htmlspecialchars($group->title)?>)</div>
                             <div class="card-body">
+                                 <?php
+                                    if(isset($_SESSION["ChangePanelsError"])){ 
+                                        ?>
+                                        <span class = "text-danger" ><?php echo $_SESSION["ChangePanelsError"]; ?></span>
+                                        <?php
+                                        unset($_SESSION["ChangePanelsError"]);
+                                    }
+                                ?>
                                 <div>
                                     <form action ="../Backend/GroupController/update_panels_to_db.php" method="POST">
 
@@ -66,13 +74,15 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                        	<div class="border-top border-bottom border-primary">
                                              <?php 
                                                 $isEval = DBHandler::IsEvaluated($panelchair[0]->id, $_GET['id']);
-                                                $disable = ($isEval)?"disabled":""; 
+                                                $disable = ($isEval)?"disabled":"";
+
                                              ?>
                                        		 <div class="form-group"><label class="small mb-1" for="inputLastName">Panelist 1 (Panel Chair):</label>
                                              <?php if($isEval) {?>
                                                     <span class='text-danger'>
                                                         <i class="fas fa-info-circle" data-toggle="tooltip" title="This panelist has already evaluated the group"></i>
                                                     </span>
+                                                    <input type = "hidden" name = "PanelChairId" value = "<?=$panelchair[0]->id?>">
                                              <?php }?>
                                         	 <select class = "form-control" name = "PanelChairId" <?=$disable?>>
                                         	 	<option disabled selected>Choose Panelist</option>
@@ -97,6 +107,7 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                                     <span class='text-danger'>
                                                         <i class="fas fa-info-circle" data-toggle="tooltip" title="This panelist has already evaluated the group"></i>
                                                     </span>
+                                                    <input type = "hidden" name = "PanelId[]" value = "<?=$panels[0]->id?>">
                                             <?php }?>    
 	                                        <select class = "form-control" name = "PanelId[]" <?=$disable?>>
 	                                        	<option disabled selected>Choose Panelist</option>
@@ -121,6 +132,7 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3);
                                                     <span class='text-danger'>
                                                         <i class="fas fa-info-circle" data-toggle="tooltip" title="This panelist has already evaluated the group"></i>
                                                     </span>
+                                                    <input type = "hidden" name = "PanelId[]" value = "<?=$panels[1]->id?>">
                                             <?php }?>
 	                                        <select class = "form-control" name = "PanelId[]" <?=$disable?>>
 	                                        	<option disabled selected >Choose Panelist</option>

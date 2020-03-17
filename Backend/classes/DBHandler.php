@@ -459,6 +459,20 @@ class DBHandler
 		return true;
 	}
 
+	public function ChangePassword($id, $password){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$rst_stmt = $connection->prepare("UPDATE Accounts SET Password = ? WHERE Id = ?");
+		$rst_stmt->bind_param('sd', md5($password), $id);
+		$rst_stmt->execute();
+
+		$connection->close();
+		return true;
+	}
+
 	//-----------------------------------GROUPS-------------------------------------
 	public static function AddGroup($title, $panel_chair_id, $panel_ids, $adviser_id, $members, $prof_id, $section){
 		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);

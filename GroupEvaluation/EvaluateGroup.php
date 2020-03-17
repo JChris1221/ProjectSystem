@@ -54,13 +54,22 @@ $criteria = DBHandler::GetCriteria();
                                    </div>
                                    <div class = "row">
                                        <?php foreach($students as $member){ ?>
-                                            <div class = "col-sm"><?=$member->firstname." ".$member->lastname?></div>
+                                            <div class = "col-sm text-center"><?=$member->firstname." ".$member->lastname?></div>
                                         <?php } ?>
                                    </div>
                                </div>
                             </div>
                             <div class="card-body">
-                                
+                                <div class='text-danger text-center'>
+                                    <?php
+                                        if(isset($_SESSION["AddGradeError"])){ 
+                                            ?>
+                                            <span class = "text-danger" ><?php echo $_SESSION["AddGradeError"]; ?></span>
+                                            <?php
+                                            unset($_SESSION["AddGradeError"]);
+                                        }
+                                    ?>
+                                </div>
                                 <div class="table-responsive">
                                     <table class="table table-sm table-bordered" id= "dataTable" width="100%" cellspacing="0">
                                         <thead>

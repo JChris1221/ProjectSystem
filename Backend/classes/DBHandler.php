@@ -880,16 +880,9 @@ class DBHandler
 			die("error executing query");
 		}
 
-		if($stmt->affected_rows == 0){
-			$success = false;
-		}
-		else{
-			$success = true;
-		}
-
 		$stmt->close();
 		$connection->close();
-		return $success;
+		return true;
 	}
 
 	public static function UpdatePanels($panelchair, $panelists, $groupid){

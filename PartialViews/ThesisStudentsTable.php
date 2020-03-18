@@ -20,7 +20,7 @@
                         $studentGroups = DBHandler::GetGroupsOfFaculty($_SESSION['Account']->id, 4);
 
                         if($studentGroups === NULL){
-                            echo "<tr><td colspan = '4'>You don't have students.</td></tr>";
+                            echo "<tr><td colspan = '4'>No groups assigned.</td></tr>";
                         }
                         else
                         {

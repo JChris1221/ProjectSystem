@@ -6,6 +6,11 @@ require_once("Backend/classes/Group.php");
 session_start();
 if(!isset($_SESSION["Account"])){
     header("Location: login.php");
+    exit();
+}
+if($_SESSION["Account"]->disabled){
+    header("Location: AccountDisabled.php");
+    exit();
 }
 
 ?>

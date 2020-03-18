@@ -6,10 +6,21 @@ require_once("../Backend/classes/Student.php");
 
 session_start();
 if(!isset($_SESSION["Account"])){
+    header("Location: ../login.php");
+}
+
+if(!isset($_GET["id"])){
     header("Location: ../404.php");
+    exit();
 }
 
 $group = DBHandler::GetGroup($_GET['id']); // get group details
+
+if($group == NULL){
+    header("Location: ../404.php");
+    exit();   
+}
+
 $panelChair = DBHandler::GetGroupFaculty($_GET['id'], 2);
 $panels = DBHandler::GetGroupFaculty($_GET['id'], 3); // Get Panelist
 $students = DBHandler::GetGroupMembers($_GET['id']);

@@ -20,7 +20,7 @@ if($_SESSION["Account"]->roleid !== 2){
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Manage Groups</title>
+        <title>Group Summary</title>
         <link href="../css/styles.css" rel="stylesheet" />
         <link href="../css/bootstrap-sandstone.min.css" rel="stylesheet" />
         <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet" crossorigin="anonymous" />
@@ -33,7 +33,7 @@ if($_SESSION["Account"]->roleid !== 2){
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4">Evaluate Groups</h1>
+                        <h1 class="mt-4">Group Summary</h1>
                         <!-- <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Tables</li>
@@ -41,8 +41,8 @@ if($_SESSION["Account"]->roleid !== 2){
                        <!--  <div class="card mb-4">
                             <div class="card-body">DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>.</div>
                         </div> -->
-                        <div class="card mb-4">
-                            <div class="card-header"><i class="fas fa-users"></i> Panel Chair Groups <i class="fas fa-info-circle" title="The groups where you are the panel chair" data-toggle="tooltip"></i>
+                        <div class="card mb-4 border-warning">
+                            <div class="card-header bg-warning"><i class="fas fa-users"></i> Panel Chair Groups <i class="fas fa-info-circle" title="The groups where you are the panel chair" data-toggle="tooltip"></i>
                             </div>
                             <div class="card-body">
                                 
@@ -100,8 +100,8 @@ if($_SESSION["Account"]->roleid !== 2){
                                 </div>
                             </div>
                         </div>
-                         <div class="card mb-4">
-                            <div class="card-header"><i class="fas fa-hands-helping"></i> Advised Groups <i class="fas fa-info-circle" title="The groups where you are the adviser" data-toggle="tooltip"></i>
+                         <div class="card mb-4 border-info">
+                            <div class="card-header bg-info"><i class="fas fa-hands-helping"></i> Advised Groups <i class="fas fa-info-circle" title="The groups where you are the adviser" data-toggle="tooltip"></i>
                             </div>
                             <div class="card-body">
                                 

@@ -20,7 +20,7 @@
                     <?php
                         $advisedGroups = DBHandler::GetGroupsOfFaculty($_SESSION['Account']->id, 1);
                         if($advisedGroups === NULL){
-                            echo "<tr><td colspan = '4'>No accounts yet.</td></tr>";
+                            echo "<tr><td colspan = '4'>No groups assigned.</td></tr>";
                         }
                         else
                         {

@@ -22,7 +22,7 @@
                         $panelistG = DBHandler::GetGroupsOfFaculty($_SESSION['Account']->id, 3);
 
                         if($panelChairG === NULL && $panelistG === NULL){
-                            echo "<tr><td colspan = '4'>You are not a panel of any group.</td></tr>";
+                            echo "<tr><td colspan = '4'>No groups assigned.</td></tr>";
                         }
                         else
                         {

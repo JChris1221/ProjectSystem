@@ -14,7 +14,7 @@
                         $groups = DBHandler::GetGroups();
 
                         if($groups === NULL){
-                            echo "<tr><td colspan = '4'>No accounts yet.</td></tr>";
+                            echo "<tr><td colspan = '4'>No groups added.</td></tr>";
                         }
                         else
                         {

@@ -143,8 +143,11 @@ $prof = DBHandler::GetGroupFaculty($_GET['id'], 4);
                                                     </div>
                                                 </div>
                                             <?php } ?>
-                                          
+                                            <div class = 'py-3'>
+                                                <a class = "btn btn-primary" href="ViewEvaluation.php?groupid=<?=$_GET['id']?>">View Overall Grade</a>
+                                            </div>
                                         </div>
+
 
                                         <!--/PANELIST-->
                                         <!--ADVISER-->

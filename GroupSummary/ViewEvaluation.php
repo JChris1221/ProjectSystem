@@ -10,13 +10,27 @@ if(!isset($_SESSION["Account"])){
     header("Location: ../login.php");
 }
 
+if(!isset($_GET["groupid"])){
+    header("Location: ../404.php");
+    exit();
+}
+
 $groupid = $_GET['groupid'];
-$panelid = $_GET['panelid'];
+
+if(isset($_GET['panelid'])){
+    $panelid = $_GET['panelid'];
+    $panel = DBHandler::GetAccountInfo($panelid);
+    $eval = DBHandler::GetEvaluation($panelid, $groupid);
+}
+else{
+    $eval = DBHandler::GetOverallGrades($groupid);
+}
 $group = DBHandler::GetGroup($groupid);
 $students = DBHandler::GetGroupMembers($groupid);
 $criteria = DBHandler::GetCriteria();
-$eval = DBHandler::GetEvaluation($panelid, $groupid);
-$panel = DBHandler::GetAccountInfo($panelid);
+
+
+
 ?>
 <html>
     <head>
@@ -38,7 +52,8 @@ $panel = DBHandler::GetAccountInfo($panelid);
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4"><i class="fas fa-chart-bar"></i> Group Evaluation (<?=$panel->firstname." ".$panel->lastname?>)</h1>
+                        <?php $title = (isset($_GET['panelid']))?$panel->firstname." ".$panel->lastname:"Overall" ?>
+                        <h1 class="mt-4"><i class="fas fa-chart-bar"></i> Group Evaluation (<?=$title?>)</h1>
 
                         <div class="card mb-4">
                             <div class="card-header bg-info">
@@ -54,9 +69,8 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                </div>
                             </div>
                             <div class="card-body">
-                                
                                 <div class="table-responsive">
-                                    <table class="table table-sm table-bordered" id= "dataTable" width="100%" cellspacing="0">
+                                    <table class="table table-sm table-bordered" width="100%" cellspacing="0">
                                         <thead>
                                             <tr align="center">
                                                 <th>Criteria</th>
@@ -64,7 +78,7 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                 <th>Acceptable<br>2</th>
                                                 <th>Proficient<br>3</th>
                                                 <th>Exemplary<br>4</th>
-                                                <th>Score</th>
+                                                <th style="width: 7%">Score</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -73,7 +87,9 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                             <input type ="hidden" value = "<?=$_GET['panelid']?>" name="panelid">
                                             <!--DOCUMENTS-->
                                             <tr align="center" class='table-primary'><th colspan="6">Document</th></tr>
-                                            <?php for($x = 0; $x < 3; $x++){ ?>
+                                            <?php for($x = 0; $x < 3; $x++){ 
+                                                $gradeFormat = (float)number_format($eval->grades[$x], 2, '.', ',');
+                                                ?>
                                                 <tr>
                                                     <th class='align-middle text-center'><?=$criteria[$x]->title?></th>
                                                     <td><?=$criteria[$x]->descriptions[0]?></td>
@@ -81,7 +97,7 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                     <td><?=$criteria[$x]->descriptions[2]?></td>
                                                     <td><?=$criteria[$x]->descriptions[3]?></td>
                                                     <td class='align-middle'>
-                                                        <input type="text" value="<?=$eval->grades[$x]?>" class = 'form-control text-center' name = "Score[]" disabled>
+                                                        <input type="text" value="<?=$gradeFormat?>" class = 'form-control text-center' name = "Score[]" disabled>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -89,7 +105,9 @@ $panel = DBHandler::GetAccountInfo($panelid);
 
                                             <!--PRESENTATION-->
                                             <tr align="center" class='table-primary'><th colspan="6">Presentation</th></tr>
-                                            <?php for($x = 3; $x < 5; $x++){ ?>
+                                            <?php for($x = 3; $x < 5; $x++){ 
+                                                $gradeFormat = (float)number_format($eval->grades[$x], 2, '.', ',');
+                                                ?>
                                                 <tr>
                                                     
                                                     <th class='align-middle text-center'><?=$criteria[$x]->title?></th>
@@ -98,7 +116,7 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                     <td><?=$criteria[$x]->descriptions[2]?></td>
                                                     <td><?=$criteria[$x]->descriptions[3]?></td>
                                                     <td class='align-middle'>
-                                                        <input type="text" value="<?=$eval->grades[$x]?>" class = 'form-control text-center' name = "Score[]" disabled>
+                                                        <input type="text" value="<?=$gradeFormat?>" class = 'form-control text-center' name = "Score[]" disabled>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -106,7 +124,9 @@ $panel = DBHandler::GetAccountInfo($panelid);
 
                                             <!--INSTRUCTIONAL CONTENT-->
                                             <tr align="center" class='table-primary'><th colspan="6">Software</th></tr>
-                                            <?php for($x = 5; $x < 10; $x++){ ?>
+                                            <?php for($x = 5; $x < 10; $x++){ 
+                                                $gradeFormat = (float)number_format($eval->grades[$x], 2, '.', ',');
+                                                ?>
                                                 <tr>
                                                     <?php if($x == 5){?>
                                                         <th class='align-middle text-center' rowspan ="5">Instructional Content</th>
@@ -116,14 +136,16 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                     <td><?=$criteria[$x]->descriptions[2]?></td>
                                                     <td><?=$criteria[$x]->descriptions[3]?></td>
                                                     <td class='align-middle'>
-                                                        <input type="text" value="<?=$eval->grades[$x]?>" class = 'form-control text-center' name = "Score[]" disabled>
+                                                        <input type="text" value="<?=$gradeFormat?>" class = 'form-control text-center' name = "Score[]" disabled>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
                                             <!--/INSTRUCTIONAL CONTENT-->
 
                                             <!--LAYOUT-->
-                                            <?php for($x = 10; $x < 14; $x++){ ?>
+                                            <?php for($x = 10; $x < 14; $x++){
+                                                $gradeFormat = (float)number_format($eval->grades[$x], 2, '.', ',');
+                                                ?>
                                                 <tr>
                                                     <?php if($x == 10){?>
                                                         <th class='align-middle text-center' rowspan ="4">Layout</th>
@@ -133,7 +155,7 @@ $panel = DBHandler::GetAccountInfo($panelid);
                                                     <td><?=$criteria[$x]->descriptions[2]?></td>
                                                     <td><?=$criteria[$x]->descriptions[3]?></td>
                                                     <td class='align-middle'>
-                                                        <input type="text" value="<?=$eval->grades[$x]?>" class = 'form-control text-center' name = "Score[]" disabled>
+                                                        <input type="text" value="<?=$gradeFormat?>" class = 'form-control text-center' name = "Score[]" disabled>
                                                     </td>
                                                 </tr>
                                             <?php } ?>
@@ -141,43 +163,51 @@ $panel = DBHandler::GetAccountInfo($panelid);
 
                                             <!-- COMPLETE -->
                                             <tr>
+                                                <?php $gradeFormat = (float)number_format($eval->grades[14], 2, '.', ','); ?>
                                                 <th class='align-middle text-center'>Complete</th>
                                                 <td><?=$criteria[14]->descriptions[0]?></td>
                                                 <td><?=$criteria[14]->descriptions[1]?></td>
                                                 <td><?=$criteria[14]->descriptions[2]?></td>
                                                 <td><?=$criteria[14]->descriptions[3]?></td>
                                                 <td class='align-middle'>
-                                                    <input type="text" value="<?=$eval->grades[$x]?>" class = 'form-control text-center' name = "Score[]" disabled>
+                                                    <input type="text" value="<?=$gradeFormat?>" class = 'form-control text-center' name = "Score[]" disabled>
                                                 </td>
                                             </tr>
                                             <!-- /COMPLETE -->
                                             <!-- COMMENT -->
-                                            <tr>
-                                                <th colspan="6" class ='table-primary text-center'>Other Comments/Observation</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="6">
-                                                    <?php
-                                                        $comment = (empty($eval->comment))?"No comments":$eval->comment;
-                                                    ?>
-                                                    <textarea name="Comment" class ="form-control" disabled><?=$comment?></textarea>
-                                                </th>
-                                            </tr>
+                                            <?php if (isset($_GET['panelid'])) { ?>
+                                                <tr>
+                                                    <th colspan="6" class ='table-primary text-center'>Other Comments/Observation</th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="6">
+                                                        <?php
+                                                            $comment = (empty($eval->comment))?"No comments":$eval->comment;
+                                                        ?>
+                                                        <textarea name="Comment" class ="form-control" disabled><?=$comment?></textarea>
+                                                    </th>
+                                                </tr>
+                                            <?php }?>
                                             <!--/COMMENT-->
 
                                             <!--TOTAL GRADE-->
                                              <tr>
                                                 <?php
-                                                $totalScore = array_sum($eval->grades);
+                                                $totalScore = (float)number_format(array_sum($eval->grades), 2,'.',',');
                                                 $rating = (($totalScore/60) * 50) + 50; ?>
-
-                                                <th colspan='2'>Total Score: <?=$totalScore?></th>;
-                                                <th colspan = '2'>Rating: <?=number_format($rating,2,'.',',')?></th>;
+ 
+                                                <th colspan = '2'>Total Score: <?=$totalScore?></th>
+                                                <th colspan = '2'>Rating: <?=number_format($rating,2,'.',',')?></th>
                                             </tr>
                                             <!-- /TOTAL GRADE -->
                                             <tr><th colspan="6" class = 'text-center'>
-                                                <a class = 'btn btn-block btn-danger' href="../Backend/EvaluationController/print_evaluation.php?groupid=<?=$_GET['groupid']?>&panelid=<?=$_GET['panelid']?>"><i class="fas fa-print"></i> Print Evaluation</a></th></tr>
-                                            <tr>
+                                                <?php if (isset($_GET['panelid'])) { ?>
+                                                    <a class = 'btn btn-block btn-danger' href="../Backend/EvaluationController/print_evaluation.php?groupid=<?=$_GET['groupid']?>&panelid=<?=$_GET['panelid']?>"><i class="fas fa-print"></i> Print Evaluation</a>
+                                                <?php }else {?>
+                                                    <a class = 'btn btn-block btn-danger' href="../Backend/EvaluationController/print_overall_evaluation.php?groupid=<?=$_GET['groupid']?>"><i class="fas fa-print"></i> Print Evaluation</a>
+                                                <?php } ?>
+                                                </th>
+                                            </tr>
                                            
                                         </form>
                                         

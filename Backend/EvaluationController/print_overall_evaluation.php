@@ -10,17 +10,18 @@ session_start();
 if(!isset($_SESSION["Account"])){
 	header("Location: ../login.php");
 }
-else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
+else if(!isset($_GET['groupid'])){
 	header("Location: ../404.php");
 
 }else{
-	$panel = DBHandler::GetAccountInfo($_GET['panelid']);
+	//$panel = DBHandler::GetAccountInfo($_GET['panelid']);
 	$group = DBHandler::GetGroup($_GET['groupid']);
 	$members = DBHandler::GetGroupMembers($group->id);
 	$adviser = DBHandler::GetGroupFaculty($group->id, 1);
 	$prof = DBHandler::GetGroupFaculty($group->id, 4);
 	$criteria = DBHandler::GetCriteria();
-	$eval = DBHandler::GetEvaluation($panel->id, $group->id);
+	$eval = DBHandler::GetOverallGrades($group->id);
+	$panels = array_merge(DBHandler::GetGroupFaculty($group->id, 2), DBHandler::GetGroupFaculty($group->id, 3));
 
 	$pdf = new TCPDF();
 
@@ -64,7 +65,7 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">'.$eval->grades[$x].'</th>
+				<th class ="text-center">'.number_format($eval->grades[$x], 2,'.',',').'</th>
 
 		</tr>';
 	}
@@ -78,7 +79,7 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">'.$eval->grades[$x].'</th>
+				<th class ="text-center">'.number_format($eval->grades[$x], 2,'.',',').'</th>
 
 		</tr>';
 	}
@@ -125,7 +126,7 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">'.$eval->grades[$x].'</th>
+				<th class ="text-center">'.number_format($eval->grades[$x], 2, '.',',').'</th>
 
 		</tr>';
 	}
@@ -142,7 +143,7 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 				<th>&#8226; '.$criteria[$x]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[$x]->descriptions[3].'</th>
-				<th class ="text-center">'.$eval->grades[$x].'</th>
+				<th class ="text-center">'.number_format($eval->grades[$x], 2, '.',',').'</th>
 
 		</tr>';
 	}
@@ -153,7 +154,7 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 				<th>&#8226; '.$criteria[14]->descriptions[1].'</th>
 				<th>&#8226; '.$criteria[14]->descriptions[2].'</th>
 				<th>&#8226; '.$criteria[14]->descriptions[3].'</th>
-				<th class ="text-center">'.$eval->grades[14].'</th>
+				<th class ="text-center">'.number_format($eval->grades[14], 2, '.',',').'</th>
 
 		</tr>';
 
@@ -168,6 +169,11 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 		$html.=$m->firstname.' '.$m->lastname.'<br>';
 	}
 
+
+	$panelString ="";
+	foreach($panels as $p){
+		$panelString.=$p->firstname." ".$p->lastname."<br>";
+	}
 
 	$html.= '
 		</td>
@@ -184,12 +190,12 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 	</tr>
 
 	<tr>
-		<td colspan = "3" rowspan = "2">Other Comments/Observation:<br>'.$eval->comment.'</td>
-		<td colspan = "2">Total Score: </td>
-		<td class = "text-center">'.$totalScore.'</td>
+		<td colspan = "3" rowspan = "2">Panelists:<br>'.$panelString.'</td>
+		<td colspan = "2">Overall Total Score: </td>
+		<td class = "text-center">'.number_format($totalScore, 2, '.',',').'</td>
 	</tr>
 	<tr>
-		<td colspan = "2">Rating: </td>
+		<td colspan = "2">Overall Rating: </td>
 		<td class="text-center">'.number_format($rating, 2, '.',',').'</td>
 	</tr>
 
@@ -198,13 +204,13 @@ else if(!isset($_GET['panelid']) || !isset($_GET['groupid'])){
 	$html .= '</table>';
 	$pdf->WriteHTMLCell(200, 0, '', '', $html, 0,1);
 
-	$evaluator = "Evaluated by: ";
+	//$evaluator = "Evaluated by: ";
 	$currentDate = new DateTime($eval->date);
 	$date = "Date: ";
-	$pdf->Cell(70, 10, $evaluator,0,0,'L');
-	$pdf->Cell(30, 10, $date,0,1,'L');
-	$pdf->Cell(70, 5, $panel->firstname." ". $panel->lastname,0,0,'C');
-	$pdf->Cell(30, 5, date_format($currentDate, "F d, Y"),0,1,'C');
+	//$pdf->Cell(70, 10, $evaluator,0,0,'L');
+	$pdf->Cell(15, 10, $date,0,0,'L');
+	//$pdf->Cell(70, 5, $panel->firstname." ". $panel->lastname,0,0,'C');
+	$pdf->Cell(30, 10, date_format($currentDate, "F d, Y"),0,1,'C');
 
 
 	$pdf->Output("Evaluation.pdf", "I");

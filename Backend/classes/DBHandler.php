@@ -1193,6 +1193,42 @@ class DBHandler
 		$connection->close();
 		return $evaluation;
 	}
+
+	public function GetOverallGrades($groupid){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT Grades.*, AVG(Grade) AS Average FROM `Grades` WHERE Group_Id = ? GROUP BY Criteria_Id ORDER BY Criteria_Id");
+		if(!$stmt){
+			die("Error: ". $connection->error);
+		}
+
+		$stmt->bind_param("d", $groupid);
+		$stmt->execute();
+
+		$result = $stmt->get_result();
+		if($result->num_rows > 0){
+			$grades = array();
+			while($row = $result->fetch_assoc()){
+				array_push($grades, $row["Average"]);
+				$date = $row['DateGiven'];
+			}
+		}else{
+			$stmt->close();
+			$connection->close();
+			return NULL;
+		}
+		
+		$comment = "";
+		
+		$evaluation = new Evaluation($grades, $comment, $date);
+
+		$stmt->close();
+		$connection->close();
+		return $evaluation;
+	}
 }
 
 ?>

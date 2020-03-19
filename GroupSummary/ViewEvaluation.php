@@ -8,6 +8,7 @@ require_once("../Backend/classes/Evaluation.php");
 session_start();
 if(!isset($_SESSION["Account"])){
     header("Location: ../login.php");
+    exit();
 }
 
 if(!isset($_GET["groupid"])){
@@ -23,7 +24,12 @@ if(isset($_GET['panelid'])){
     $eval = DBHandler::GetEvaluation($panelid, $groupid);
 }
 else{
+    $complete = DBHandler::IsEvalComplete($groupid);
     $eval = DBHandler::GetOverallGrades($groupid);
+    if(!$complete){
+        header("Location: ../404.php");
+        exit();
+    }
 }
 $group = DBHandler::GetGroup($groupid);
 $students = DBHandler::GetGroupMembers($groupid);

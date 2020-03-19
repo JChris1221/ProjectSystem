@@ -26,7 +26,7 @@ $panels = DBHandler::GetGroupFaculty($_GET['id'], 3); // Get Panelist
 $students = DBHandler::GetGroupMembers($_GET['id']);
 $adviser = DBHandler::GetGroupFaculty($_GET['id'], 1);// Get Adviser
 $prof = DBHandler::GetGroupFaculty($_GET['id'], 4);
-
+$complete = DBHandler::IsEvalComplete($_GET['id']);
 ?>
 
 <!DOCTYPE html>
@@ -144,7 +144,8 @@ $prof = DBHandler::GetGroupFaculty($_GET['id'], 4);
                                                 </div>
                                             <?php } ?>
                                             <div class = 'py-3'>
-                                                <a class = "btn btn-primary" href="ViewEvaluation.php?groupid=<?=$_GET['id']?>">View Overall Grade</a>
+                                                <?php $disabled = ($complete)?"":"disabled"?>
+                                                <a class = "btn btn-primary <?=$disabled?>" href="ViewEvaluation.php?groupid=<?=$_GET['id']?>" >View Overall Grade</a>
                                             </div>
                                         </div>
 

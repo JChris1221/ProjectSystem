@@ -8,12 +8,15 @@ session_start();
 //header("Content-type: application/pdf");
 
 if(!isset($_SESSION["Account"])){
-	header("Location: ../login.php");
+	header("Location: ../../login.php");
 }
 else if(!isset($_GET['groupid'])){
-	header("Location: ../404.php");
-
+	header("Location: ../../404.php");
 }else{
+
+	if(!DBHandler::IsEvalComplete($_GET['groupid'])){
+		header("Location: ../../404.php");	
+	}
 	//$panel = DBHandler::GetAccountInfo($_GET['panelid']);
 	$group = DBHandler::GetGroup($_GET['groupid']);
 	$members = DBHandler::GetGroupMembers($group->id);

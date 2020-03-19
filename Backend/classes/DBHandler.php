@@ -1229,6 +1229,32 @@ class DBHandler
 		$connection->close();
 		return $evaluation;
 	}
+	//Checks if evaluation is complete
+	public function IsEvalComplete($groupid){
+		$connection = new mysqli(self::$server, self::$s_username, self::$s_pass, self::$dbName);
+
+		if($connection->connect_error)
+			die($connection->connect_error);
+
+		$stmt = $connection->prepare("SELECT Panelist_Id FROM Grades WHERE Group_Id = ? GROUP BY Panelist_Id;");
+		if(!$stmt){
+			die("Error: ". $connection->error);
+		}
+
+		$stmt->bind_param("d", $groupid);
+		$stmt->execute();
+
+		$result = $stmt->get_result();
+		if($result->num_rows == 3){
+			$stmt->close();
+			$connection->close();
+			return True;
+		}else{
+			$stmt->close();
+			$connection->close();
+			return False;
+		}
+	}
 }
 
 ?>

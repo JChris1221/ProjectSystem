@@ -44,7 +44,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`Id`, `Username`, `Password`, `Firstname`, `Lastname`, `Role_Id`, `Disabled`) VALUES
-(2, 'Admin', '0192023a7bbd73250516f069df18b500', 'Dan', 'Felix', 1, 0),
+(2, 'Admin', '81dc9bdb52d04dc20036dbd8313ed055', 'Dan', 'Felix', 1, 0),
 (5, 'martha1221', '81dc9bdb52d04dc20036dbd8313ed055', 'Martha', 'House', 2, 0),
 (6, 'chap32', '81dc9bdb52d04dc20036dbd8313ed055', 'Spike', 'Chapman', 2, 0),
 (7, 'patty', '81dc9bdb52d04dc20036dbd8313ed055', 'Patricia', 'Stone', 2, 0),

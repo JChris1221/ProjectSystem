@@ -1,6 +1,6 @@
 <?php
 function RelativeLink($link){
-	$rootFolderName = dirname(__DIR__);
+	$rootFolderName = "ProjectSystem";
 
 	$prefix;
 	if(basename(getcwd()) == $rootFolderName){

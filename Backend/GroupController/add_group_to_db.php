@@ -43,11 +43,11 @@ else{
 	$panel_chair = $_POST["PanelChairId"];
 	$adviser = $_POST["AdviserId"];
 
-	if($profid == $adviser){
-		$_SESSION["AddGroupError"]	= "Professor and Adviser cannot be the same person";
-		header("Location: ../../GroupManagement/AddGroup.php");
-		exit();
-	}
+	//if($profid == $adviser){
+	//	$_SESSION["AddGroupError"]	= "Professor and Adviser cannot be the same person";
+	//	header("Location: ../../GroupManagement/AddGroup.php");
+	//	exit();
+	//}
 
 	if(in_array($adviser, $panelist) || $adviser == $panel_chair){
 		$_SESSION["AddGroupError"]	= "The adviser cannot be one of the panelist";
